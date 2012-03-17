@@ -22,8 +22,8 @@
 		$country = strtolower($country);
 	?>
 	<div class = "row">
-			<div class = "span8">
-				<div style = "background: #dbdbdb; border: 1px solid #CACACA;" class = "round" >
+			<div class = "span10">
+				<div style = "background: #dbdbdb; border: 1px solid #CACACA;" >
 					<div class = "row-fluid">
 					
 							<div class = "span2">
@@ -35,7 +35,7 @@
 								</div>
 							</div>
 							
-							<div class = "span2">
+							<div class = "span1">
 								<div class = "row-fluid topical">			
 										
 										<div class = "span4">
@@ -71,6 +71,12 @@
 								</div>
 								<div class = "row-fluid">
 									<span class = "right quiet">Est. Delivery</span>
+								</div>
+							</div>
+							<div class = "span2">
+								<div style = "width: 0px; float: right; border-top:30px solid #000; border-right:30px solid #000; border-left:30px solid transparent;progid:DXImageTransform.Microsoft.Alpha(opacity=0); /* IE6+ */-ms-filter: progid:DXImageTransform.Microsoft.Alpha(opacity=0); border-bottom:30px solid transparent;progid:DXImageTransform.Microsoft.Alpha(opacity=0); /* IE6+ */-ms-filter: progid:DXImageTransform.Microsoft.Alpha(opacity=0);"></div>
+								<div style = "position: relative; float: right;">
+									<div style = "position: absolute;color: #fff; font-weight: bold;  top:10px; left: 25px; font-size: 1.1em;">-<?php echo $model->discount; ?>%</div>
 								</div>
 							</div>
 						</div>

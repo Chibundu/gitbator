@@ -158,6 +158,22 @@ $form=$this->beginWidget('ext.bootstrap.widgets.BootActiveForm',array(
 		
 		</div>
 		
+		<div class = "row-fluid prepend-top">
+			<?php echo CHtml::label('How much discount are you willing to offer?', 'discount');?>
+		</div>
+		<div class = "row-fluid">		
+			
+			<div class = "span12">
+				<div class = "row-fluid">				
+				 <?php echo $form->textField($model,'discount', array('class'=>'span2')).' &nbsp;<span = style = "font-size: 1.4em; font-weight: bold;">%</span>'; ?>		
+				</div>
+				<div class = "row-fluid">
+				<?php echo $form->error($model,'discount'); ?>
+				</div>
+			</div>			
+		
+		</div>
+		
 	
 		
 		<div class = "prepend-top">	
