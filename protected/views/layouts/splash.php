@@ -9,7 +9,8 @@
 <!--[if IE 7]>    <html class="no-js ie7 oldie" lang="en"> <![endif]-->
 <!--[if IE 8]>    <html class="no-js ie8 oldie" lang="en"> <![endif]-->
 <!-- Consider adding an manifest.appcache: h5bp.com/d/Offline -->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+<!--[if gt IE 8]><!--> 
+<html class="no-js" lang="en"> <!--<![endif]-->
 <head>
  <meta charset="utf-8"> 
 
@@ -23,9 +24,7 @@
   <!-- Place favicon.ico and apple-touch-icon.png in the root directory: mathiasbynens.be/notes/touch-icons -->
 
   <!-- CSS: implied media=all -->
-  <!-- CSS concatenated and minified via ant build script-->   
- 	
-  <link rel="stylesheet" type="text/css" href="<?php echo $baseUrl; ?>/js/fancybox/jquery.fancybox-1.3.4.css" media="screen" />
+  
   <?php $cs->registerCssFile($baseUrl.'/css/bootstrap.min.css');?> 
   <?php $cs->registerCssFile($baseUrl.'/css/bootstrap-responsive.min.css');?>
   <?php $cs->registerCssFile($baseUrl.'/css/custom.css');?> 
@@ -188,8 +187,6 @@
   
   <!-- scripts concatenated and minified via ant build script--> 
   <script defer src="<?php echo $baseUrl.'/js/script.js'?>"></script> 
-  <script type="text/javascript" src="<?php echo $baseUrl?>/js/fancybox/jquery.mousewheel-3.0.4.pack.js"></script>
-  <script type="text/javascript" src="<?php echo $baseUrl?>/js/fancybox/jquery.fancybox-1.3.4.pack.js"></script>
   <script type="text/javascript" src="<?php echo $baseUrl?>/js/jquery.fitvids.js"></script>
 	  
   <!-- end scripts-->	

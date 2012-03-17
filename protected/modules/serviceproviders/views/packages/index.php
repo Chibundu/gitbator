@@ -74,25 +74,46 @@ Quick Fix for delete Flash
 					<?php echo CHtml::image("$baseUrl/$packages_dir".$packages[$i]->picture);?>
 					<div class = "caption">
 						<h5><?php echo CHtml::link($packages[$i]->title, $package_title_link)?></h5>
-				
+							<?php $discount = $packages[$i]->discount;?>
 							<div class = "row-fluid prepend-top">
-								<div class = "span4">
-									<span class = "bold"><?php echo $packages[$i]->currency->symbol.number_format($packages[$i]->cost,2); ?></span>
-									<br>
-									<span class = "help-block" style = "font-size: 0.85em;"><?php echo Packages::costType($packages[$i]->cost_type) ?></span>
+								<?php if($discount > 0):?>
+								<div class = "span2">
+									
+									<div>		
+										<div style = "position: relative; top: -10px;">							
+											<div style = "width: 0px; border-right: 25px solid transparent;progid:DXImageTransform.Microsoft.Alpha(opacity=0); /* IE6+ */-ms-filter: progid:DXImageTransform.Microsoft.Alpha(opacity=0); border-top: 25px solid transparent;progid:DXImageTransform.Microsoft.Alpha(opacity=0); /* IE6+ */-ms-filter: progid:DXImageTransform.Microsoft.Alpha(opacity=0); border-left: 25px solid <?php echo ($discount > 0)?'#000':'transparent'?>; border-bottom: 25px solid <?php echo ($discount > 0)?'#000':'transparent'?>;">
+								
+											 </div>
+										</div>
+										<div style = "position: relative;">
+											 <div style = "position: absolute; top: -30px; font-weight: bold; color: #fff; font-size: 0.8em">
+												 &nbsp;- <?php echo $discount;?>%
+											 </div>
+										</div>
+									</div>
+								</div>
+								<?php endif;?>
+								<div class = "span<?php echo ($discount > 0)? '3': '4'; ?>">
+									<div <?php echo ($discount <= 0)? 'style = "height: 50px;"':'';?>>
+										<span class = "bold"><?php echo $packages[$i]->currency->symbol.number_format($packages[$i]->cost,2); ?></span>
+										<br>
+										<span class = "help-block" style = "font-size: 0.85em;"><?php echo Packages::costType($packages[$i]->cost_type) ?></span>
+									</div>
 								</div>
 								<div class = "span4">
 									<span class = "bold"><?php echo $packages[$i]->delivery ?></span>
-									<span class = "bold"> day <?php echo (($packages[$i]->delivery > 1)? 's' : '') ?></span> 
+									<span class = "bold"> day<?php echo (($packages[$i]->delivery > 1)? 's' : '') ?></span> 
 									<br>
 									<span class = "help-block" style = "font-size: 0.85em;">Est. Delivery</span>				
 								</div>
-								<div class = "span4 bold">
-									<?php echo $packages[$i]->units_bought; ?> <i class = "icon-shopping-cart"></i>
-								</div>
+								<div class = "span<?php echo ($discount > 0)? '3 ': '4 '; ?> bold">
+									<?php echo $packages[$i]->units_bought; ?> <i class = "icon-shopping-cart"></i>									
+								</div>						
 							</div>							
 				
 					</div>
+							
+					
 				</div>
 				<div class = "thumbnail" style = "margin-top:3px;">
 					<div class = "caption" style = "padding: 0px;">

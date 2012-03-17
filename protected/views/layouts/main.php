@@ -1,6 +1,6 @@
 <?php 
 	$cs = Yii::app()->clientScript;
-	$baseUrl = Yii::app()->baseUrl; 
+	$baseUrl = Yii::app()->baseUrl; 	
  	$cs->registerCoreScript("jquery");
 ?>
 <!doctype html>
@@ -25,9 +25,9 @@
   <!-- CSS: implied media=all -->
   <!-- CSS concatenated and minified via ant build script-->   
    
-  <?php $cs->registerCssFile($baseUrl.'/css/bootstrap.min.css');?> 
-  <?php $cs->registerCssFile($baseUrl.'/css/custom.css');?>
-  <?php $cs->registerCssFile($baseUrl.'/css/bootstrap-responsive.min.css');?>    
+<?php $cs->registerCssFile($baseUrl.'/css/bootstrap.min.css');?> 
+  <?php $cs->registerCssFile($baseUrl.'/css/bootstrap-responsive.min.css');?>
+  <?php $cs->registerCssFile($baseUrl.'/css/custom.css');?>    
   <!-- end CSS-->
 
   <!-- More ideas for your <head> here: h5bp.com/d/head-Tips -->
