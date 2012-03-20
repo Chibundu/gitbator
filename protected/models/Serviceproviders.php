@@ -102,7 +102,7 @@ class Serviceproviders extends CActiveRecord
 			array('sizerange_id, currency_id, created_on, lastModified', 'numerical', 'integerOnly'=>true),			
 			array('displayName', 'match','pattern'=>'/^([A-Za-z0-9\-_])+$/'),
 			array('displayName', 'unique'),
-			array('businessName,keywords,skills', 'match','pattern'=>'/^([A-Za-z0-9\-_,&().  ])+$/'),
+			array('businessName,keywords,skills', 'match','pattern'=>'/^([A-Za-z0-9\-_,&().#  ])+$/'),
 			array('businessName','validateBizName'),
 			array('businessRegType','validateBizType'),			
 			array('regYear','match','pattern'=>'/^\d{4,4}$/'),

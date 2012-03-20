@@ -211,7 +211,7 @@ class PackagesController extends Controller
 				
 				if($picture != "default/service_package.png"){
 				
-					//Yii::import('application.WideImage.*');
+					Yii::import('application.WideImage.*');
 					
 					$left = (int)$_POST['left'];
 					$top = (int)$_POST['top'];
@@ -227,19 +227,18 @@ class PackagesController extends Controller
 					if($left > 0 || $top > 0){						
 						
 						//we resize the image to scaled size and crop				
-						//WideImage::load($picture_path)->resize($scaledWidth, $scaledHeight, 'fill')->crop($left, $top, $width, $height)->saveToFile($picture_path);
-						//Create Larger version
-						//WideImage::load($picture_path)->resize(375)->saveToFile("$package_dir/larger/$picture");
-						$image = Yii::app()->image->load($picture_path);
-						$image->resize($scaledWidth, $scaledHeight, Image::NONE);
-						$image->crop($width, $height, $top, $left);
-						$image->save();
+						WideImage::load($picture_path)->resize($scaledWidth, $scaledHeight, 'fill')->crop($left, $top, $width, $height)->saveToFile($picture_path);						
+						//$image = Yii::app()->image->load($picture_path);
+						//$image->resize($scaledWidth, $scaledHeight, Image::NONE);
+						//$image->crop($width, $height, $top, $left);
+						//$image->save();
 						
 						if(copy($picture_path, $package_dir."larger/$picture"))
 						{
-							$larger_image = Yii::app()->image->load($package_dir."larger/$picture");
-							$larger_image->resize(375,260)->quality(100)->sharpen(30);
-							$larger_image->save();							
+							WideImage::load($package_dir."larger/$picture")->resize('411')->saveToFile($package_dir."larger/$picture");
+							//$larger_image = Yii::app()->image->load($package_dir."larger/$picture");
+							//$larger_image->resize(375,260)->quality(100)->sharpen(30);
+							//$larger_image->save();							
 						}
 						
 					}	
@@ -271,6 +270,7 @@ class PackagesController extends Controller
 	public function actionUpdate($id) {
 		
 		$model = $this->loadModel ( $id );
+		
 		$oldPic = $model->picture;
 		
 		if(isset($_GET['pic_form']) && (bool)$_GET['pic_form'] == true)
@@ -355,7 +355,7 @@ class PackagesController extends Controller
 						WideImage::load($picture_path)->resize($scaledWidth, $scaledHeight, 'fill')->crop($left, $top, $width, $height)->saveToFile($picture_path);
 						//Create Larger version but first delete old larger version
 						@unlink("$package_dir/larger/$oldPic");
-						WideImage::load($picture_path)->resize(375)->saveToFile("$package_dir/larger/$picture");
+						WideImage::load($picture_path)->resize(411)->saveToFile("$package_dir/larger/$picture");
 					}
 					$_SESSION['justAddedPackage']=$model->id;
 					
@@ -370,6 +370,70 @@ class PackagesController extends Controller
 		}
 		
 		$this->render ( 'update', array ('model' => $model, 'symbol' => $model->currency->symbol ) );
+		
+	}	
+	
+	
+	/**	 
+	 * Pauses the packages supplied by the parameter $id
+	 * @param integer $id
+	 */
+	public function actionPause($id)
+	{
+		if(isset($_GET['requestType']) && $_GET['requestType'] == 'private' && is_numeric($_GET['id'])){
+			$model = $this->loadModel($id);			
+			if($model!=NULL && Yii::app()->user->checkAccess('sp-accountOwner', array('sp_id'=>$model->serviceproviders_id))){				
+				$model->status = Packages::PAUSED;
+				$model->save(false);		
+				$_SESSION['pauseTitle'] = $model->title;
+				$_SESSION['justAddedPackage']=$model->id; //This session variable is being set because it is used as a flag for the highlight function on the index page
+				echo CJSON::encode(array('messageType'=>'Success', "Service Package  has been put on hold."));		
+			}
+			else
+			{
+				throw new CHttpException(400, 'Invalid Request. Please Do not repeat this request again!');
+			}
+		}
+		else
+		{
+			throw new CHttpException(400, 'Invalid Request. Please Do not repeat this request again!');
+		}
+	}
+	
+	public function actionResume($id)
+	{
+		if(isset($_GET['requestType']) && $_GET['requestType'] == 'private' && is_numeric($_GET['id'])){
+			$model = $this->loadModel($id);
+			if($model!=NULL && Yii::app()->user->checkAccess('sp-accountOwner', array('sp_id'=>$model->serviceproviders_id))){
+				$model->status = Packages::ACTIVE;
+				$model->save(false);
+				$_SESSION['resumeTitle'] = $model->title;
+				$_SESSION['justAddedPackage']=$model->id; //This session variable is being set because it is used as a flag for the highlight function on the index page
+				echo CJSON::encode(array('messageType'=>'Success', "Service Package  has been restored."));
+			}
+			else
+			{
+				throw new CHttpException(400, 'Invalid Request. Please Do not repeat this request again!');
+			}
+		}
+		else
+		{
+			throw new CHttpException(400, 'Invalid Request. Please Do not repeat this request again!');
+		}
+	}
+	public function actionFeature($id)
+	{	
+		$package = $this->loadModel($id);
+		
+		if($package && Yii::app()->user->checkAccess('sp-accountOwner', array('sp_id'=>$package->serviceproviders_id))){			
+			$this->render("feature", array('package'=>$package));
+			
+		}
+		else 
+		{
+			
+			throw new CHttpException(400, 'Invalid Request. Please do not repeat this request again.');
+		}
 		
 	}
 
@@ -437,6 +501,7 @@ class PackagesController extends Controller
 	 * Returns the data model based on the primary key given in the GET variable.
 	 * If the data model is not found, an HTTP exception will be raised.
 	 * @param integer the ID of the model to be loaded
+	 * @return Packages
 	 */
 	public function loadModel($id)
 	{

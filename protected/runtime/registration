@@ -3,3 +3,13 @@
 in C:\wamp\www\vcubator-revised\protected\controllers\SiteController.php (238)
 in C:\wamp\www\vcubator-revised\protected\controllers\SiteController.php (105)
 in C:\wamp\www\vcubator-revised\index.php (13)
+2012/03/19 14:31:34 [trace] [registration] Thank you for signing up on the Vcubator.<br /> To activate your account please, <a href="http://thevcubator.com/site/activate/?req=mbagwu.c@gmail.com&type=sp&code=7aedd5a31a1375e01a29aedf93ab2eba">Click Here</a>
+		.
+in /home/customercare/public_html/vcubator/protected/controllers/SiteController.php (240)
+in /home/customercare/public_html/vcubator/protected/controllers/SiteController.php (105)
+in /home/customercare/public_html/vcubator/index.php (13)
+2012/03/20 08:15:49 [trace] [registration] Thank you for signing up on the Vcubator.<br /> To activate your account please, <a href="http://thevcubator.com/site/activate/?req=mbagwu.c@gmail.com&type=sp&code=a2331874c9b2f837d97b2e146b434f08">Click Here</a>
+		.
+in /home/customercare/public_html/vcubator/protected/controllers/SiteController.php (240)
+in /home/customercare/public_html/vcubator/protected/controllers/SiteController.php (105)
+in /home/customercare/public_html/vcubator/index.php (13)

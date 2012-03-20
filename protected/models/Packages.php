@@ -21,6 +21,9 @@
  * @property integer $currencies_id
  * @property integer $last_modified
  * @property integer $created_on
+ * @property integer $status
+ * @property integer $banned
+ * @property integer $featured_priority
  *
  * The followings are the available model relations:
  * @property PackageDeliverables[] $packageDeliverables
@@ -31,10 +34,27 @@
  */
 class Packages extends CActiveRecord
 {
+	//Package Cost Type
 	const PER_MONTH = 1;
 	const PER_ANNUM = 2;
 	const PER_HOUR = 3;
 	const ONE_OFF = 4;
+	
+	//Package status
+	const ACTIVE = 1;
+	const PENDING_APPROVAL = 0;
+	const PAUSED = -1;
+	
+	//Whether package is banned or not
+	const BANNED = 1;
+	const NOT_BANNED = 0;
+	
+	//Package Feature Priority
+	const NORMAL = 0;
+	const HIGH = 1;
+	const HIGHER = 2;
+	const HIGHEST = 3;
+	
 	
 	public $deliverables;
 	public $excluded;
@@ -68,17 +88,19 @@ class Packages extends CActiveRecord
 		return array(
 			array('serviceproviders_id, servicecategories_id, title, description, deliverables, cost', 'required'),
 			array('deliverables', 'checkDeliverables', 'message'=> 'The Service Deliverables must be clearly outlined'),
+			array('title', 'uniqueToUser'),
 			array('deliverables, excluded', 'safe'),					
 			array('delivery, serviceproviders_id, servicecategories_id, units_bought, vote_up, vote_down', 'numerical', 'integerOnly'=>true),
 			array('discount', 'numerical'),
 			array('picture', 'file', 'types'=>'jpg, gif, png', 'allowEmpty'=>'true', 'maxSize'=>5242880),
 			array('picture', 'default', 'value'=>'default/service_package.png'),
-			array('description, cost, cost_type', 'length', 'max'=>500),
+			array('cost, cost_type', 'numerical'),
+			array('description', 'length', 'min'=>50, 'max'=>500),
 			array('title', 'length', 'max'=>78),
 			array('instructions', 'length', 'max'=>500),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, title, description, picture, cost, cost_type, delivery, instructions, serviceproviders_id, servicecategories_id', 'safe', 'on'=>'search'),
+			array('id, title, description, picture, cost, cost_type, delivery, instructions, serviceproviders_id, servicecategories_id, banned, status,featured_priority', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -123,6 +145,9 @@ class Packages extends CActiveRecord
 			'discount'=>'Discount',
 			'last_modified'=>'Last Modified',
 			'created_on'=>'Created On',
+			'banned'=>'Banned',
+			'status'=>'Status',
+			'featured_priority'=>'Priority'
 		);
 	}
 
@@ -152,6 +177,9 @@ class Packages extends CActiveRecord
 		$criteria->compare('vote_up',$this->vote_up);
 		$criteria->compare('vote_down',$this->vote_down);
 		$criteria->compare('discount',$this->discount);
+		$criteria->compare('banned',$this->banned);
+		$criteria->compare('status',$this->status);
+		$criteria->compare('featured_priority',$this->status);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
@@ -229,12 +257,50 @@ class Packages extends CActiveRecord
 		}		
 	}
 	
+	/**
+	 * Ensures that service deliverables are entered
+	 * @param mixed $attributes
+	 * @param array $params
+	 */
 	public function checkDeliverables($attributes, $params)
 	{		
 		if((strcasecmp($this->deliverables, "")==0) || (strcasecmp($this->deliverables, "Deliverable #1\r\nDeliverable #2\r\nDeliverable #3") == 0))
 		{						
 			$this->addError('deliverables', (($params['message'])?$params['message']:"The Service Deliverables must be clearly outlined"));
 		}			
+	}
+	
+	/**	 
+	 * Ensures that the attributes supplied is unique to the user
+	 * @param mixed $attributes
+	 * @param array $params
+	 */
+	public function uniqueToUser($attributes, $params)
+	{				
+		if(!is_array($attributes))
+		{
+			//find a model that has value of the said attribute which and which belongs to this user
+			$model = self::findByAttributes(array($attributes =>$this->$attributes, 'serviceproviders_id'=>$this->serviceproviders_id));
+			
+			
+			if($model && ($model->id != $this->id))
+			{				
+				$this->addError($attributes, $error=ucfirst($attributes)." is already in use by you.");
+			}
+			
+			
+		}
+		else 
+		{
+			foreach ($attributes as $attribute)
+			{
+				$model = self::findByAttributes(array($attribute =>$this->$attribute, 'serviceproviders_id'=>$this->serviceproviders_id));
+				if($model && ($model->id != $this->id))
+				{
+					$this->addError($attribute, $error=ucfirst($attribute)." is already in use by you.");
+				}				
+			}
+		}
 	}
 	
 	public function delete()
@@ -256,6 +322,33 @@ class Packages extends CActiveRecord
 		{
 			throw new CHttpException('400', 'You are not authorized to carry out this action. Please do not repeat this request again.');
 		}		
+	}
+	
+	/**
+	 * An example of a normalized package id is PKG-0384 or PKG-3884 or PKG-0021 0r PKG-38736. We prefix the ids with 'PKG-' plus the number of digits necessary to make
+	 * the value returned to be at least 8 characters in total.
+	 * @return string normalized id
+	 */
+	public function getNormalizedId()
+	{		
+		$id = $this->id;
+		
+		if($id < 10)
+		{
+			return 'PKG-000'.$id;		
+		}
+		else if($id >= 10 && $id < 100)
+		{
+			return 'PKG-00'.$id;
+		}
+		else if($id >= 1000 && $id < 1000)
+		{
+			return 'PKG-0'.$id;
+		}
+		else 
+		{
+			return 'PKG-'.$id;
+		}
 	}
 	
 	public function behaviors()

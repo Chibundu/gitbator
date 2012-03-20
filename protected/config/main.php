@@ -85,7 +85,7 @@ return array(
 			// use 'site/error' action to display errors
             'errorAction'=>'site/error',
         ),
-        'paymentTransaction'=>require dirname(__FILE__).'/payment_config.php',
+      //  'paymentTransaction'=>require dirname(__FILE__).'/payment_config.php',
 		'log'=>array(
 			'class'=>'CLogRouter',
 			'routes'=>array(

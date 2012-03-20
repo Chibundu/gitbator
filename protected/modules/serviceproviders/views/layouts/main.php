@@ -133,7 +133,7 @@
 							'id'=>'profile_guage',
 							'value'=>$completeness,									
 							'htmlOptions'=>array(
-								'style'=>'width: 100%; height:12px; float:left; border: 1px solid #9cb42d; margin-top: 3px;foreground: blue;'
+								'style'=>'width: 100%; height:12px; float:left; border: 1px solid #9cb42d; margin-top: 3px;'
 							),
 						));
 					?>
@@ -220,7 +220,7 @@
 </body>
 </html>
 
-
+<?php $cs->registerCss('progress-bar-style', '.ui-widget-header{background: url('.$baseUrl.'/css/img/green_bg.png);}');?>
 
 
 
