@@ -32,8 +32,7 @@
  *
  * @property Availability[] $availabilities
  * @property Jobrequests[] $jobrequests
- * @property Otherservices[] $otherservices
- * @property Paymentmodel[] $paymentmodels
+ * @property Otherservices[] $otherservices 
  * @property Portfolios[] $portfolio
  * @property Services[] $services
  * @property Services[] $servicesAndCat
@@ -102,7 +101,7 @@ class Serviceproviders extends CActiveRecord
 			array('sizerange_id, currency_id, created_on, lastModified', 'numerical', 'integerOnly'=>true),			
 			array('displayName', 'match','pattern'=>'/^([A-Za-z0-9\-_])+$/'),
 			array('displayName', 'unique'),
-			array('businessName,keywords,skills', 'match','pattern'=>'/^([A-Za-z0-9\-_,&().  ])+$/'),
+			array('businessName,keywords,skills', 'match','pattern'=>'/^([A-Za-z0-9\-_,&().#  ])+$/'),
 			array('businessName','validateBizName'),
 			array('businessRegType','validateBizType'),			
 			array('regYear','match','pattern'=>'/^\d{4,4}$/'),
@@ -135,8 +134,7 @@ class Serviceproviders extends CActiveRecord
 			'tblSkills' => array(self::MANY_MANY, 'Skills', 'serviceproviders_skills(tbl_serviceproviders_id, tbl_skills_id)'),
 			'availabilities' => array(self::HAS_MANY, 'Availability', 'serviceproviders_id'),
 			'jobrequests' => array(self::HAS_MANY, 'Jobrequests', 'serviceproviders_id'),
-			'otherservices' => array(self::HAS_MANY, 'Otherservices', 'serviceproviders_id'),
-			'paymentmodels' => array(self::HAS_MANY, 'Paymentmodel', 'serviceproviders_id'),
+			'otherservices' => array(self::HAS_MANY, 'Otherservices', 'serviceproviders_id'),			
 			'portfolio' => array(self::HAS_MANY, 'Portfolios', 'serviceproviders_id'),
 			'services' => array(self::MANY_MANY, 'Services', '{{providers_services}}(serviceproviders_id, services_id)'),
 			'servicesAndCat'=>array(self::MANY_MANY, 'Services','{{providers_services}}(serviceproviders_id, services_id)',

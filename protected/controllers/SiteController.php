@@ -55,7 +55,7 @@ class SiteController extends Controller
 				if($account_type == 'SPC' || $account_type == 'SPF'){										
 					
 					$sp = new Serviceproviders();
-					$sp->currency_id = 1;
+					$sp->currency_id = 3;
 					$sp->activationCode = $activation_code =  Miscellaneous::generateRandom(9);
 					$sp->accountType = ($account_type == 'SPC')?'company':'freelancer';
 					$sp->save(false);		

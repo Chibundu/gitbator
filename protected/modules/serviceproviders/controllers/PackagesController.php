@@ -1,5 +1,5 @@
 <?php
-
+Yii::import('ext.payment.purse.components.Purse');
 class PackagesController extends Controller
 {
 	/**
@@ -211,7 +211,7 @@ class PackagesController extends Controller
 				
 				if($picture != "default/service_package.png"){
 				
-					//Yii::import('application.WideImage.*');
+					Yii::import('application.WideImage.*');
 					
 					$left = (int)$_POST['left'];
 					$top = (int)$_POST['top'];
@@ -227,19 +227,18 @@ class PackagesController extends Controller
 					if($left > 0 || $top > 0){						
 						
 						//we resize the image to scaled size and crop				
-						//WideImage::load($picture_path)->resize($scaledWidth, $scaledHeight, 'fill')->crop($left, $top, $width, $height)->saveToFile($picture_path);
-						//Create Larger version
-						//WideImage::load($picture_path)->resize(375)->saveToFile("$package_dir/larger/$picture");
-						$image = Yii::app()->image->load($picture_path);
-						$image->resize($scaledWidth, $scaledHeight, Image::NONE);
-						$image->crop($width, $height, $top, $left);
-						$image->save();
+						WideImage::load($picture_path)->resize($scaledWidth, $scaledHeight, 'fill')->crop($left, $top, $width, $height)->saveToFile($picture_path);						
+						//$image = Yii::app()->image->load($picture_path);
+						//$image->resize($scaledWidth, $scaledHeight, Image::NONE);
+						//$image->crop($width, $height, $top, $left);
+						//$image->save();
 						
 						if(copy($picture_path, $package_dir."larger/$picture"))
 						{
-							$larger_image = Yii::app()->image->load($package_dir."larger/$picture");
-							$larger_image->resize(375,260)->quality(100)->sharpen(30);
-							$larger_image->save();							
+							WideImage::load($package_dir."larger/$picture")->resize('411')->saveToFile($package_dir."larger/$picture");
+							//$larger_image = Yii::app()->image->load($package_dir."larger/$picture");
+							//$larger_image->resize(375,260)->quality(100)->sharpen(30);
+							//$larger_image->save();							
 						}
 						
 					}	
@@ -271,6 +270,7 @@ class PackagesController extends Controller
 	public function actionUpdate($id) {
 		
 		$model = $this->loadModel ( $id );
+		
 		$oldPic = $model->picture;
 		
 		if(isset($_GET['pic_form']) && (bool)$_GET['pic_form'] == true)
@@ -355,7 +355,7 @@ class PackagesController extends Controller
 						WideImage::load($picture_path)->resize($scaledWidth, $scaledHeight, 'fill')->crop($left, $top, $width, $height)->saveToFile($picture_path);
 						//Create Larger version but first delete old larger version
 						@unlink("$package_dir/larger/$oldPic");
-						WideImage::load($picture_path)->resize(375)->saveToFile("$package_dir/larger/$picture");
+						WideImage::load($picture_path)->resize(411)->saveToFile("$package_dir/larger/$picture");
 					}
 					$_SESSION['justAddedPackage']=$model->id;
 					
@@ -370,6 +370,201 @@ class PackagesController extends Controller
 		}
 		
 		$this->render ( 'update', array ('model' => $model, 'symbol' => $model->currency->symbol ) );
+		
+	}	
+	
+	
+	/**	 
+	 * Pauses the packages supplied by the parameter $id
+	 * @param integer $id
+	 */
+	public function actionPause($id)
+	{
+		if(isset($_GET['requestType']) && $_GET['requestType'] == 'private' && is_numeric($_GET['id'])){
+			$model = $this->loadModel($id);			
+			if($model!=NULL && Yii::app()->user->checkAccess('sp-accountOwner', array('sp_id'=>$model->serviceproviders_id))){				
+				$model->status = Packages::PAUSED;
+				$model->save(false);		
+				$_SESSION['pauseTitle'] = $model->title;
+				$_SESSION['justAddedPackage']=$model->id; //This session variable is being set because it is used as a flag for the highlight function on the index page
+				echo CJSON::encode(array('messageType'=>'Success', "Service Package  has been put on hold."));		
+			}
+			else
+			{
+				throw new CHttpException(400, 'Invalid Request. Please Do not repeat this request again!');
+			}
+		}
+		else
+		{
+			throw new CHttpException(400, 'Invalid Request. Please Do not repeat this request again!');
+		}
+	}
+	
+	public function actionResume($id)
+	{
+		if(isset($_GET['requestType']) && $_GET['requestType'] == 'private' && is_numeric($_GET['id'])){
+			$model = $this->loadModel($id);
+			if($model!=NULL && Yii::app()->user->checkAccess('sp-accountOwner', array('sp_id'=>$model->serviceproviders_id))){
+				$model->status = Packages::ACTIVE;
+				$model->save(false);
+				$_SESSION['resumeTitle'] = $model->title;
+				$_SESSION['justAddedPackage']=$model->id; //This session variable is being set because it is used as a flag for the highlight function on the index page
+				echo CJSON::encode(array('messageType'=>'Success', "Service Package  has been restored."));
+			}
+			else
+			{
+				throw new CHttpException(400, 'Invalid Request. Please Do not repeat this request again!');
+			}
+		}
+		else
+		{
+			throw new CHttpException(400, 'Invalid Request. Please Do not repeat this request again!');
+		}
+	}
+	/**
+	 * Displays the 'Buy a feature' page
+	 * @param integer $id
+	 * @throws CHttpException
+	 */
+	public function actionFeature($id)
+	{	
+		$package = $this->loadModel($id);
+		$app = Yii::app();
+		if($package && $app->user->checkAccess('sp-accountOwner', array('sp_id'=>$package->serviceproviders_id))){	
+			$currency = Currencies::model()->findByAttributes(array('code'=>$app->params['feature']['currency_code']));
+			$price = $app->params['feature']['price'];
+			$duration = $app->params['feature']['duration'];
+			$this->render("feature", array('package'=>$package, 'currency_symbol'=>$currency->symbol, 'price'=>$price, 'duration'=>$duration, 'id'=>$id ));
+			
+		}
+		else 
+		{
+			
+			throw new CHttpException(400, 'Invalid Request. Please do not repeat this request again.');
+		}
+		
+	}
+	
+	public function actionConfirmFeatureOrder($id, $mode)
+	{
+		$package = $this->loadModel($id);
+		
+		$app = Yii::app();
+		$sp = $package->serviceprovider;
+		$spId = $sp->id;	
+		
+		if($package && $app->user->checkAccess('sp-accountOwner', array('sp_id'=>$spId))){	
+				
+			$currency_code = $app->params['feature']['currency_code'];
+			$price = $app->params['feature']['price'];
+			$duration = $app->params['feature']['duration'];
+			
+			$currency = Currencies::model()->findByAttributes(array('code'=>$currency_code));
+			
+			$symbol = '';
+			
+			if($currency != NULL)
+			{
+				$symbol = $currency->symbol;
+			}
+			
+			$item = SaleItems::PACKAGE_FEATURE;
+			$title = $package->title;
+			$currency_id = $currency->id;	
+			
+			$payer_details = array();
+			
+			$orderConfig =
+			array(
+					'user_id'=>$spId,
+					'user_type'=>'SP',
+					'orders'=>array(
+							array(
+									'item'=>$item,
+									'description'=>'Upgrade of package '.$title.' to Premium.',
+									'quantity'=>1,
+									'currency_id'=>$currency_id,
+									'currency_symbol'=>$symbol,
+									'unit_price'=>$price,
+									'discount'=>0,
+							)
+					)
+			);
+			
+			$order_ids = OrderHelper::takeOrders($orderConfig);
+			$processedOrdersIdentifier = OrderHelper::getPOI('SP', $order_ids);
+			
+			$orderFulfillmentUrl = '';
+			
+			if($mode == "purse")
+			{			
+				if($sp->purse > $price)
+				{			
+					$orderFulfillmentUrl = $this->createUrl('packages/featurePurseActivation', array('poi'=>$processedOrdersIdentifier, 'ser_pack_id'=>$id));
+				}
+				else 
+				{
+					Yii::app()->user->setFlash('error', '<h3>Insufficient Funds</h3>You do not have sufficient funds in your V-purse to carry out this transaction.<p style = "padding-top: 5px;">'.CHtml::link('Load your V-purse &raquo;', array('payment/loadVPurse'), array('class'=>'btn')).'</p>');
+					$this->redirect(array('packages/feature', 'id'=>$id));					
+				}				
+				
+			}
+			else 
+			{								
+				$payer_details = OrderHelper::getSPPayerDetails();				
+			}
+			
+			$this->render('confirmFeatureOrder', array('payer_details'=>$payer_details, 'orderConfig'=>$orderConfig, 'id'=>$id, 'orderFulfillmentUrl'=>$orderFulfillmentUrl, 'mode'=>$mode));
+			
+		}
+		else
+		{
+				
+			throw new CHttpException(400, 'Invalid Request. Please do not repeat this request again.');
+		}
+	
+	}	
+	
+	/**
+	 * Process order request for purse payments to make a package premium
+	 * @param string $poi the Processed Order Identifier, a string in the format User_Type-id1:id2 
+	 * e.g SP:1:2:3 means process orders 1,2 and 3 for Service Provider
+	 */
+	public function actionFeaturePurseActivation($poi, $ser_pack_id)
+	{	
+		
+		$orderData = OrderHelper::parsePOI($poi);
+		
+		if($orderData['user_type'] == 'SP')
+		{	
+						
+			$orderIds = $orderData['order_ids'];
+			
+			foreach($orderIds as $orderId)
+			{
+				
+				$successMessage = '';
+				$errorMessage = '';			
+				
+				$package = Packages::model()->findByPk($ser_pack_id);
+				
+				if($package != NULL){
+					$successMessage = '<h3>Order Processed</h3>Your order has been successfully processed and your package "<b>'.$package->title.'</b>" is now premium.';
+					$errorMessage = '<h3>Order Error</h3>Something seems to have gone wrong with the order. Please try again later.';
+				}							
+				
+				$purse = new Purse();
+				
+				if($purse->pay($orderId, 'SP', $successMessage, $errorMessage))
+				{
+					$package->featured_priority = Packages::HIGH;
+					$package->save(false);
+				}
+				
+				$this->redirect('index');			
+				
+			}
+		}
 		
 	}
 
@@ -437,6 +632,7 @@ class PackagesController extends Controller
 	 * Returns the data model based on the primary key given in the GET variable.
 	 * If the data model is not found, an HTTP exception will be raised.
 	 * @param integer the ID of the model to be loaded
+	 * @return Packages
 	 */
 	public function loadModel($id)
 	{

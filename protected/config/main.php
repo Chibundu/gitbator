@@ -85,7 +85,7 @@ return array(
 			// use 'site/error' action to display errors
             'errorAction'=>'site/error',
         ),
-        'paymentTransaction'=>require dirname(__FILE__).'/payment_config.php',
+      //  'paymentTransaction'=>require dirname(__FILE__).'/payment_config.php',
 		'log'=>array(
 			'class'=>'CLogRouter',
 			'routes'=>array(
@@ -110,6 +110,7 @@ return array(
 		),
 		'clientScript'=>array(
 			'scriptMap'=>array(
+				'custom.css'=>"/css/custom.css",
 				'bootstrap.min.css'=>"/css/bootstrap.min.css",
 				'bootstrap-responsive.min.css'=>"/css/bootstrap-responsive.min.css",
 				'bootstrap-transition.js'=>'/js/bootstrap.min.js',
@@ -137,7 +138,8 @@ return array(
 		'session'=>array(
  			'class'=>'CHttpSession', 
 		),
-	),
+	),	
+	
 
 	// application-level parameters that can be accessed
 	// using Yii::app()->params['paramName']

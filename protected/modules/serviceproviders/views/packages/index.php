@@ -16,6 +16,15 @@ Yii::app()->clientScript->registerScriptFile(Yii::app()->request->baseUrl."/js/a
 </div>
 
 
+<div class = "row-fluid">
+	<div  class = "span10 prepend-top">
+	<?php
+		 $this->widget("BootAlert");		 
+	?>
+	</div>
+</div>
+
+
 <!--
 Quick Fix for delete Flash
 -->
@@ -30,7 +39,33 @@ Quick Fix for delete Flash
 </div>
 <?php endif; ?>
 
-<?php if(isset($_SESSION['justAddedPackage'])):?>
+<!--
+Quick Fix for pause Flash
+-->
+<?php if(isset($_SESSION['pauseTitle'])):?>
+<div id = "delete_flash_sec" class = "row-fluid">
+	<div  class = "span10 prepend-top">
+	<?php
+		 $this->widget("ext.SimpleFlash", array('css'=>'alert-success', 'message'=>'<h3>Service Package "'.$_SESSION['pauseTitle'].'" has been put on hold.</h3> Remember you can easily restore this package anytime by clicking on the resume button. </p>'));		 
+	?>
+	</div>
+</div>
+<?php endif; ?>
+
+<!--
+Quick Fix for resume Flash
+-->
+<?php if(isset($_SESSION['resumeTitle'])):?>
+<div id = "delete_flash_sec" class = "row-fluid">
+	<div  class = "span10 prepend-top">
+	<?php
+		 $this->widget("ext.SimpleFlash", array('css'=>'alert-success', 'message'=>'<h3>Service Package "'.$_SESSION['resumeTitle'].'" is now active. Interested buyers are now able to buy this package. </p>'));		 
+	?>
+	</div>
+</div>
+<?php endif; ?>
+
+<?php if(!isset($_SESSION['resumeTitle']) && !isset($_SESSION['pauseTitle']) && isset($_SESSION['justAddedPackage'])):?>
 <div class = "row-fluid">
 	<div  class = "span10 prepend-top">
 	<?php $this->widget("BootAlert");?>
@@ -64,17 +99,79 @@ Quick Fix for delete Flash
 	
 	<!-- Packages for this Service Provider -->
 		<ul class = "thumbnails">
+		
 		<?php for ($i = 0; $i < $itemCount; $i++):?>	
-		<?php $package_title_link = $this->createUrl('packages/view', array('id'=>$packages[$i]->id));?>
+		<?php
+		 
+		$current_package = $packages[$i];
+		$status = $current_package->status;
+		
+		$package_title_link = $this->createUrl('packages/view', array('id'=>$current_package->id));?>
 			
 			
-			<li class = "span<?php echo (12/$numberOfColumns); if(isset($_SESSION['justAddedPackage']) && $_SESSION['justAddedPackage'] == $packages[$i]->id): echo " highlight"; unset($_SESSION['justAddedPackage']); endif;?>">
-				<div class = "thumbnail">
+			<li class = "span<?php echo (12/$numberOfColumns); if(isset($_SESSION['justAddedPackage']) && $_SESSION['justAddedPackage'] == $current_package->id): echo " highlight"; unset($_SESSION['justAddedPackage']); unset($_SESSION['resumeTitle']); unset($_SESSION['pauseTitle']); endif;?>">
 				
-					<?php echo CHtml::image("$baseUrl/$packages_dir".$packages[$i]->picture);?>
+				<div class = "row-fluid">
+					<div 
+						<?php if($status == Packages::PENDING_APPROVAL)
+							 {
+							 	echo 'style = "width: 130px; float: right;"';
+							 }							 
+							 else 
+							 {
+							 	echo 'style = "width: 70px; float: right;"';
+							 }
+						  ?>" style = "float: right;">					
+						<div style = "float: left;">
+							<div class="circle small_circle 
+							<?php
+							 if($status == Packages::PENDING_APPROVAL)
+							 {
+							 	echo "yellow";
+							 }
+							 else if($status == Packages::ACTIVE )
+							 {
+							 	echo "green";
+							 }
+							 else 
+							 {
+							 	echo "red";
+							 }
+							  ?>_circular_gradient animate"></div>
+						</div>	
+						<div style = "float: left;">&nbsp;
+							<?php 
+								
+								if ($status == Packages::PENDING_APPROVAL)
+								{
+									echo "Pending Approval";	
+								}
+								else if($status == Packages::ACTIVE)
+								{
+									echo "Active";
+								}
+								else 
+								{
+									echo "Paused";
+								}
+							?>
+						</div>
+					</div>	
+				
+			 	</div>	
+				
+				
+				
+				<div class = "thumbnail">
+						<?php if($current_package->featured_priority >= Packages::HIGH): ?>
+						<div style = "position: relative">					
+							<div class="ribbon-wrapper-green"><div class="ribbon-green">Featured</div></div>
+						</div>
+						<?php endif; ?>
+					<?php echo CHtml::image("$baseUrl/$packages_dir".$current_package->picture, '', array('height'=>'180px'));?>
 					<div class = "caption">
-						<h5><?php echo CHtml::link($packages[$i]->title, $package_title_link)?></h5>
-							<?php $discount = $packages[$i]->discount;?>
+						<h5><?php echo CHtml::link($current_package->title, $package_title_link)?></h5>
+							<?php $discount = $current_package->discount;?>
 							<div class = "row-fluid prepend-top">
 								<?php if($discount > 0):?>
 								<div class = "span2">
@@ -86,7 +183,7 @@ Quick Fix for delete Flash
 											 </div>
 										</div>
 										<div style = "position: relative;">
-											 <div style = "position: absolute; top: -30px; font-weight: bold; color: #fff; font-size: 0.8em">
+											 <div style = "position: absolute; top: -30px; font-weight: bold; color: #fff; font-size: 0.8em;">
 												 &nbsp;- <?php echo $discount;?>%
 											 </div>
 										</div>
@@ -95,19 +192,19 @@ Quick Fix for delete Flash
 								<?php endif;?>
 								<div class = "span<?php echo ($discount > 0)? '3': '4'; ?>">
 									<div <?php echo ($discount <= 0)? 'style = "height: 50px;"':'';?>>
-										<span class = "bold"><?php echo $packages[$i]->currency->symbol.number_format($packages[$i]->cost,2); ?></span>
+										<span class = "bold" style = "word-wrap: break-word; font-size: 0.95em;"><?php echo $current_package->currency->symbol.number_format($current_package->cost,2); ?></span>
 										<br>
-										<span class = "help-block" style = "font-size: 0.85em;"><?php echo Packages::costType($packages[$i]->cost_type) ?></span>
+										<span class = "help-block" style = "font-size: 0.85em;"><?php echo Packages::costType($current_package->cost_type) ?></span>
 									</div>
 								</div>
 								<div class = "span4">
-									<span class = "bold"><?php echo $packages[$i]->delivery ?></span>
-									<span class = "bold"> day<?php echo (($packages[$i]->delivery > 1)? 's' : '') ?></span> 
+									<span class = "bold" style = "word-wrap: break-word; font-size: 0.95em;"><?php echo $current_package->delivery ?></span>
+									<span class = "bold"> day<?php echo (($current_package->delivery > 1)? 's' : '') ?></span> 
 									<br>
 									<span class = "help-block" style = "font-size: 0.85em;">Est. Delivery</span>				
 								</div>
-								<div class = "span<?php echo ($discount > 0)? '3 ': '4 '; ?> bold">
-									<?php echo $packages[$i]->units_bought; ?> <i class = "icon-shopping-cart"></i>									
+								<div class = "span<?php echo ($discount > 0)? '3 ': '4 '; ?> bold" style = "word-wrap: break-word; font-size: 0.95em;">
+									<?php echo $current_package->units_bought; ?> <i class = "icon-shopping-cart"></i>									
 								</div>						
 							</div>							
 				
@@ -118,10 +215,24 @@ Quick Fix for delete Flash
 				<div class = "thumbnail" style = "margin-top:3px;">
 					<div class = "caption" style = "padding: 0px;">
 						<div class = "row-fluid">
-							<div class = "span4"><?php echo CHtml::link('<i class = "icon-pencil"></i> Edit', array('packages/update', 'id'=>$packages[$i]->id),array('class'=>'update_link')) ?></div>
-							<div class = "span4"><?php echo CHtml::beginForm(array('packages/delete', 'id'=>$packages[$i]->id, 'ajax'=>true), 'post', array('style'=>'margin:0px;')).CHtml::link('<i class = "icon-trash"></i> Delete','#',array('class'=>'delete_link')).CHtml::endForm(); ?></div>
+							<div class = "span4"><?php echo CHtml::link('<i class = "icon-pencil"></i> Edit', array('packages/update', 'id'=>$current_package->id),array('class'=>'update_link')) ?></div>
+							<div class = "span4"><?php echo CHtml::beginForm(array('packages/delete', 'id'=>$current_package->id, 'ajax'=>true), 'post', array('style'=>'margin:0px;')).CHtml::link('<i class = "icon-trash"></i> Delete','#',array('class'=>'delete_link')).CHtml::endForm(); ?></div>
 							<div class = "span4"><?php echo CHtml::link('<i class = "icon-eye-open"></i> View', $package_title_link, array('class'=>'view_link')) ?></div>
 						</div>
+					
+						<div class = "row-fluid">							
+							<?php if($status != Packages::PENDING_APPROVAL):?>
+							<div class = "span4"><?php echo CHtml::link('<i class = "icon-star-empty"></i> Feature', array('packages/feature', 'id'=>$current_package->id),array('class'=>'feature_link')) ?></div>
+							<?php if($status == Packages::PAUSED):?>
+							<div class = "span4"><?php echo CHtml::link('<i class = "icon-play"></i> Resume', array('packages/resume', 'id'=>$current_package->id),array('class'=>'resume_link')) ?></div>
+							<?php else: ?>
+							<div class = "span4">								
+								<?php echo CHtml::link('<i class = "icon-pause"></i> Pause', array('packages/pause', 'id'=>$current_package->id), array('class'=>'pause_link')) ?>									
+							</div>
+							<?php endif;?>
+							<?php endif;?>
+						</div>
+						
 					</div>
 			 	</div>
 			</li>
@@ -282,8 +393,42 @@ Quick Fix for delete Flash
 		}		
 			
 	});	
+	
+	$(".pause_link").click(function(e){		
+		e.preventDefault();		
+		if(confirm("Are you sure you want to pause this service package? This package will no longer be available to buyers for purchase. However you can always choose to restore it by clicking on the resume button.")){
+			$.ajax({
+				cache : false,
+				url : $(this).attr("href"),
+				dataType : "json",
+				data : {requestType : "private"},
+				success : function(data)
+				{
+					window.location.href = \''.$this->createUrl("packages/index").'\';
+				}
+			});		
+		}
+			
+	});	
 		
-		
+	$(".resume_link").click(function(e){		
+		e.preventDefault();		
+		if(confirm("You are about to resume this service package. This package will now be available to buyers for purchase; however, you can always choose to pause it again if you are not available to receive orders.")){
+			$.ajax({
+				cache : false,
+				url : $(this).attr("href"),
+				dataType : "json",
+				data : {requestType : "private"},
+				success : function(data)
+				{
+					window.location.href = \''.$this->createUrl("packages/index").'\';
+				}
+			});		
+		}
+			
+	});		
+			
+	
 		
 ', CClientScript::POS_READY);?>
 

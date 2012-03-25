@@ -4,7 +4,7 @@
  	$cs->registerCoreScript("jquery");
  	$teammember = Miscellaneous::getTeamMember(); 	
  	$sp = Miscellaneous::getServiceProvider(); 	
- 	
+ 	$currency = $sp->currency;
  	$completeness = Miscellaneous::getProfileCompleteness();
  	
 ?>
@@ -133,7 +133,7 @@
 							'id'=>'profile_guage',
 							'value'=>$completeness,									
 							'htmlOptions'=>array(
-								'style'=>'width: 100%; height:12px; float:left; border: 1px solid #9cb42d; margin-top: 3px;foreground: blue;'
+								'style'=>'width: 100%; height:12px; float:left; border: 1px solid #9cb42d; margin-top: 3px;'
 							),
 						));
 					?>
@@ -142,7 +142,11 @@
 					 <span style = "font-size: 70%">profile completeness <?php echo $completeness; ?>%</span>
 					</div>
 				</div>	
-							
+				
+				
+				<div class = "span8">
+				<span class = "right" style = "background: #fff; padding: 4px; border: 1px solid #EBEBEB; border-radius: 7px; -moz-border-radius: 7px; -webkit-border-radius: 7px;"><?php echo CHtml::image("$baseUrl/images/icon-purse.png",'V-Purse', array('style'=>'position: relative; top: 4px;')).' <span style = "font-size: 1.5em;" class = "highlight">'.$currency->symbol.'</span><span style = "font-size: 1.4em;">'.number_format($sp->purse, 2). '</span>'; ?></span>
+				</div>		
 			
 				
 			</div>		
@@ -157,7 +161,7 @@
 
  
  	<?php 	
- 		if($sp->isActivated && !isset(Yii::app()->session['prompted'])):
+ 		if($completeness < 50 && $sp->isActivated && !isset(Yii::app()->session['prompted'])):
  			Yii::app()->session['prompted'] = "yes";
  	?>
  	
@@ -220,7 +224,7 @@
 </body>
 </html>
 
-
+<?php $cs->registerCss('progress-bar-style', '.ui-widget-header{background: url('.$baseUrl.'/css/img/green_bg.png);}');?>
 
 
 

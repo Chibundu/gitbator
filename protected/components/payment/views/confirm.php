@@ -44,7 +44,7 @@ $payment_id = '';
 $enc_payment_id = '';
 $item_name = '';
 $item_description = '';
-$amount = '';
+$unit_price = '';
 $confirmation_address = '';
 
 $security_signature='';
@@ -69,7 +69,7 @@ if(substr($payment->payer, 0, 2) == 'sp')
 }
 $currency = Currencies::model();
 $enc = new Encryption();
-$amount = $payment->amount;
+$unit_price = $payment->amount;
 $item_name = $payment->for;
 $item_description = 'Payment for '.$payment->for;
 $payment_id = $payment->id;

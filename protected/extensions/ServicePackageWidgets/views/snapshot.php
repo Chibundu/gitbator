@@ -21,33 +21,24 @@
 		$country = ($model)?$model->serviceprovider->address->country: 'ZA';
 		$country = strtolower($country);
 	?>
-	<div class = "row">
-			<div class = "span10">
-				<div style = "background: #dbdbdb; border: 1px solid #CACACA;" >
-					<div class = "row-fluid">
-					
-							<div class = "span2">
-								<div class = "row-fluid">
-									<div class = "span8">
-										<?php echo CHtml::image((($isSample || !$logoPath) ? "$baseUrl/images/v.png" : "$logoPath"), 'Logo', array('style'=>'margin: 3px;'));?>										
-									</div>
-									<div class = "span4"><?php echo CHtml::image("$baseUrl/images/flags/$country.png",'Flag', array('style'=>'margin-left: 5px; padding-top: 30px;'));?></div>
+	<div class = "row-fluid">
+			<div class = "span12">
+					<div class = "row-fluid">						
+						<div class = "span12" style = "position: relative; background: #E3DCD0; box-shadow: 0 0 2px rgba(0, 0, 0, 0.35), 0 85px 180px 0 #FFFFFF, 0 12px 8px -5px rgba(0, 0, 0, 0.85);">
+						<?php if($model->featured_priority >= Packages::HIGH):?>						
+						 <div class="ribbon-wrapper-green"><div class="ribbon-green">Featured</div></div>
+						 <?php endif; ?>
+							<div class = "row-fluid">
+								<div class = "span2">								
+									<?php echo CHtml::image((($isSample || !$logoPath) ? "$baseUrl/images/v.png" : "$logoPath"), 'Logo', array('style'=>'margin:2px;'));?>
+									<?php echo CHtml::image("$baseUrl/images/flags/$country.png",'Flag', array('style'=>'padding-top: 30px;'));?>
 								</div>
-							</div>
-							
-							<div class = "span1">
-								<div class = "row-fluid topical">			
-										
-										<div class = "span4">
-										<span class = "right"><?php echo  ($model)? $model->units_bought : $units_bought;?></span>
-										</div>
-										<div class = "span8">
-										<?php echo CHtml::image("$baseUrl/images/shopping.png", '', array('style'=>'margin-top: 5px;')); ?>
-										</div>
-															
-								</div>									
-							</div>
-							
+								<div class = "span1">
+								<div class = "row-fluid">						
+								<span class = "topical"><?php echo  ($model)? $model->units_bought : $units_bought;?></span>																							
+								</div>	
+								<div class = "row-fluid"><i class = "icon-shopping-cart"></i></div>															
+								</div>
 							<div class = "span3">
 								<?php if($rating):?>
 								<div class = "row-fluid"><span class = "topical"><?php echo $rating; ?>%</span></div>
@@ -57,36 +48,45 @@
 								<div class = "row-fluid"><span class = "quiet">Not Rated Yet</span></div>
 								<?php endif;?>
 							</div>
-							<div class = "span2">
+							
+							<div style = "float: left; width: 95px;">
 								<div class = "row-fluid">
-									<span class = "topical right"><?php echo ($model)?($model->currency->symbol.' '.number_format($model->cost, 2)):$currencySymbol.' '.number_format($cost, 2); ?></span>
+									<span class = "topical"><?php echo ($model)?($model->currency->symbol.' '.number_format($model->cost, 2)):$currencySymbol.' '.number_format($cost, 2); ?></span>
 								</div>
 								<div class = "row-fluid">
-									<span class = "right quiet"><?php echo Packages::costType(($model)?$model->cost_type:$cost_type); ?></span>
+									<span class = "quiet"><?php echo Packages::costType(($model)?$model->cost_type:$cost_type); ?></span>
 								</div>
 							</div>
-							<div class = "span2">
+							<?php if($model->discount > 0):?>
+							<div class = "span1">
 								<div class = "row-fluid">
-									<span class = "topical right"><?php echo ($model)?($model->delivery.' '.(($model->delivery > 1)?'days':'day')):($delivery.' '.(($delivery > 1)? 'days': 'day')); ?></span>
+									<span class = "topical ">-<?php echo $model->discount; ?>%</span>
 								</div>
 								<div class = "row-fluid">
-									<span class = "right quiet">Est. Delivery</span>
+									<span class = "quiet">Discount</span>
+								</div>								
+							</div>
+							<?php endif; ?>
+							<div class = "span2">
+								<div class = "row-fluid">
+									<span class = "topical"><?php echo ($model)?($model->delivery.' '.(($model->delivery > 1)?'days':'day')):($delivery.' '.(($delivery > 1)? 'days': 'day')); ?></span>
+								</div>
+								<div class = "row-fluid">
+									<span class = "quiet">Est. Delivery</span>
 								</div>
 							</div>
-							<div class = "span2">
-								<div style = "width: 0px; float: right; border-top:30px solid #000; border-right:30px solid #000; border-left:30px solid transparent;progid:DXImageTransform.Microsoft.Alpha(opacity=0); /* IE6+ */-ms-filter: progid:DXImageTransform.Microsoft.Alpha(opacity=0); border-bottom:30px solid transparent;progid:DXImageTransform.Microsoft.Alpha(opacity=0); /* IE6+ */-ms-filter: progid:DXImageTransform.Microsoft.Alpha(opacity=0);"></div>
-								<div style = "position: relative; float: right;">
-									<div style = "position: absolute;color: #fff; font-weight: bold;  top:10px; left: 25px; font-size: 1.1em;">-<?php echo $model->discount; ?>%</div>
-								</div>
 							</div>
 						</div>
 					</div>
 					<div class = "row-fluid prepend-top">
 						<div class = "span6">
-							<?php echo ($model)? $model->description : $description; ?>
+							<span style = "word-wrap:break-word;"><?php echo ($model)? $model->description : $description; ?></span>
 						</div>
 						<div class = "span6" >
-							<?php echo CHtml::image($baseUrl.'/'.$app->params['service_packages_dir'].(($model)?"larger/".$model->picture: $picture), ''); ?>
+							
+							<?php echo CHtml::image($baseUrl.'/'.$app->params['service_packages_dir'].(($model)?"larger/".$model->picture: $picture), '', 
+									array('style'=>"background-image: -moz-linear-gradient(center top , #F6F2EC, #E2DBCE); border: 4px solid #FFFFFF; box-shadow: 0 0 2px rgba(0, 0, 0, 0.35), 0 85px 180px 0 #FFFFFF, 0 12px 8px -5px rgba(0, 0, 0, 0.85);")); ?>
+						
 						</div>
 					</div>
 					<hr>
@@ -102,7 +102,7 @@
 							 	foreach ($deliverables as $deliverable):
 							 ?>
 							 
-							 	<li><?php echo $deliverable->deliverable; ?></li>							 	
+							 	<li style = "word-wrap: break-word"><?php echo $deliverable->deliverable; ?></li>							 	
 							 
 							 <?php endforeach;?>
 							 </ul>
@@ -119,7 +119,7 @@
 							 	foreach ($excluded_items as $excluded_item):
 							 ?>
 							 
-							 	<li><?php echo $excluded_item->item; ?></li>							 	
+							 	<li style = "word-wrap: break-word"><?php echo $excluded_item->item; ?></li>							 	
 							 
 							 <?php endforeach;?>
 							 </ul>

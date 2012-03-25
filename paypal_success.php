@@ -118,7 +118,7 @@ if ($payment) {
 			$firstname = $keyarray ['first_name'];
 			$lastname = $keyarray ['last_name'];
 			$itemname = $keyarray ['item_name'];
-			$amount = $keyarray ['payment_gross'];
+			$unit_price = $keyarray ['payment_gross'];
 		
 		} else if (strcmp ( $lines [0], "FAIL" ) == 0) {
 			// log for manual investigation

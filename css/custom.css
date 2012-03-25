@@ -18,7 +18,7 @@ div.form div.error label,
 div.form label.error,
 div.form span.error
 {
-	color: #C00;
+	color: #C00;		
 }
 
 div.form div.error input,
@@ -354,9 +354,9 @@ div.form .errorMessage, .errorMessage
 	.giant-reveal-modal {
 		visibility: hidden;
 		top: 100px; 
-		left: 30%;
+		left: 33.5%;
 		margin-left: -300px;
-		width: 960px;
+		width: 860px;
 		background: #eee url(../images/misc/modal-gloss.png) no-repeat -200px -80px;
 		position: absolute;
 		z-index: 41;
@@ -458,7 +458,11 @@ dl.tabs.vertical dd a
 	font-size:14px;
 }
 
-
+.large-btn
+{
+	font-size: 1.5em;
+	padding: 10px 20px;
+}
 
 
 
@@ -471,6 +475,7 @@ dl.tabs.vertical dd a
 #secondary-bar
 {		
 	/*background: url(img/sec_bg.png) repeat-x;*/
+	
 	min-height: 35px;
 	padding-top: 3.8%;
 	padding-bottom: 5px;
@@ -590,13 +595,19 @@ dl.tabs.vertical dd a
 	-moz-border-radius-topleft:14px;
 	border-top-left-radius:14px;		
 }
-.topical {margin:0;font-weight:bold;color:#333333;line-height:27px;font-size:18px; }
+.topical {margin:0; font-weight:bold;color:#333333;line-height:27px;font-size:1.4em; }
 .align_right    { text-align:right;	  }
 .align_left     { text-align:left;	  }
 .align_center   { text-align:center;  }
 .align_justify  { text-align:justify; }
 
 .right    { float:right;	  }
+
+.status_circles li
+{
+	list-style-type: none;
+	float:left;
+}
 
 
 .picture_box
@@ -638,15 +649,15 @@ dl.tabs.vertical dd a
 .dashboard_content
 {
 	min-height:195px;
-	box-shadow: 0 2px 5px rgba(0,0,0,0.15);
+	border: 1px solid #f0f0f0;
+	box-shadow: 0 2px 5px rgba(0,0,0,0.15);	
 	-webkit-box-shadow: 0 2px 5px rgba(0,0,0,0.15);
 	-moz-box-shadow: 0 2px 5px rgba(0,0,0,0.25);
 	margin: 0 0 20px 0;	
 }
 .db-item-row-first
 {
-	padding: 10px 5px 25px 5px;
-	border-top: 1px solid #f0f0f0;
+	padding: 10px 5px 25px 5px;	
 	border-bottom: 1px solid #f0f0f0;
 	background:#fafafa;
 }
@@ -670,14 +681,18 @@ dl.tabs.vertical dd a
 }
 .notice_panel
 {
-	padding: 0px 0px 20px 0px;
-	border: 1px solid #DFDFDF;
+	padding: 0px 0px 20px 0px;	
 	background: #fff;	
-	box-shadow: 0 2px 5px rgba(0,0,0,0.15);
-	-webkit-box-shadow: 0 2px 5px rgba(0,0,0,0.15);
-	-moz-box-shadow: 0 2px 5px rgba(0,0,0,0.25);
 	margin: 0 0 10px 0;	
 
+}
+.notice_panel_content
+{
+	border: 1px solid #f0f0f0;
+	box-shadow: 0 2px 5px rgba(0,0,0,0.15);	
+	-webkit-box-shadow: 0 2px 5px rgba(0,0,0,0.15);
+	-moz-box-shadow: 0 2px 5px rgba(0,0,0,0.25);
+	margin: 0 0 20px 0;	
 }
 .nt-item-row-first
 {
@@ -697,13 +712,15 @@ dl.tabs.vertical dd a
 	word-break:break-all;
 }
 .nt-head
-{
-	margin-bottom: 20px;
-	padding-left: 5px;	
+{	
+	padding: 5px;	
 	background: #e8e8e8;
 	background: -moz-linear-gradient(top, #EEE 0%, #e8e8e8 100%);
 	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#EEE), color-stop(100%, #e8e8e8));
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#EEE', endColorstr='#e8e8e8',GradientType=0 );	
+	box-shadow: 0 2px 5px rgba(0,0,0,0.15);	
+	-webkit-box-shadow: 0 2px 5px rgba(0,0,0,0.15);
+	-moz-box-shadow: 0 2px 5px rgba(0,0,0,0.25);		
 }
 .phone
 {
@@ -771,6 +788,14 @@ span.required
 {
 	border: 1px solid #efefef;
 }
+.bottom_bordered
+{
+	border-bottom: 1px solid #efefef;
+}
+.no_bottom_border
+{
+	border-bottom: none;
+}
 
 .offer_box
 {
@@ -805,6 +830,13 @@ span.required
 	-webkit-border-radius:3px;
 	border-radius: 3px;
 	color:#fff;
+}
+.thin_gold_border
+{
+	position:relative;
+	top:-2px;
+	left:-2px;
+	border: 2px solid #F0CF6C;
 }
 .light_gold_border
 {
@@ -938,7 +970,13 @@ div.points ul
 {
 	margin: 0;
 }
-
+.info_alert
+{
+	background: url(img/circle_info.png) no-repeat left center;
+	min-height: 26px;
+	padding-left: 30px;
+	padding-top: 10px;
+}
 .blue_bg
 {
 	background:url(img/splash_bg.jpg) repeat-x;
@@ -992,26 +1030,8 @@ div.points ul
 {
 	display: block;
 }
-.change
-{
-	margin-left: 15px;	
-	color: #f3f3f3;
-}
-.edit_box
-{	
-	position: absolute;		
-	display: none;
-	background: url(img/change.jpg) no-repeat;
-	font-size: 10px;	
-	text-decoration: none;
-	padding-right:3px;	
-}
-.edit_box:hover
-{	
-	opacity:0.7;
-	filter:alpha(opacity=70); 
-	text-decoration: none;	
-}
+
+
 .border-bottom
 {
 	border-bottom:1px solid #efefef;
@@ -1048,7 +1068,120 @@ div.points ul
 {
 	width:31px;
 }
+.circle {	
+	border-radius: 50%;
+	width: 20px;
+	height: 20px; 
+	/* width and height can be anything, as long as they're equal */
+}
+/* Create the animation blocks */
+@-webkit-keyframes spin {
+  from { -webkit-transform: rotate(0deg); }
+  to { -webkit-transform: rotate(360deg); }
+}
 
+@-moz-keyframes spin {
+  from { -moz-transform: rotate(0deg); }
+  to { -moz-transform: rotate(360deg); }
+}
+
+@-ms-keyframes spin {
+  from { -ms-transform: rotate(0deg); }
+  to { -ms-transform: rotate(360deg); }
+}
+.small_circle
+{
+  width: 15px;
+  height: 15px;
+}
+.yellow_circular_gradient
+{    
+  background-image: -moz-radial-gradient(5px 5px 5deg, circle cover, yellow 0%, orange 100%, red 95%);
+  background-image: -webkit-radial-gradient(5px 5px, circle cover, yellow, orange);
+  background-image: radial-gradient(5px 5px 5deg, circle cover, yellow 0%, orange 100%, red 95%);
+}
+.red_circular_gradient
+{
+  background-image: -moz-radial-gradient(5px 5px 5deg, circle cover,red 0%, #D94B44 100%, red 95%);
+  background-image: -webkit-radial-gradient(5px 5px, circle cover, red, #D94B44);
+  background-image: radial-gradient(5px 5px 5deg, circle cover, red, #D94B44 100%, red 95%);
+}
+.green_circular_gradient
+{
+  background-image: -moz-radial-gradient(5px 5px 5deg, circle cover,#DEEEDE 0%, green 100%, red 95%);
+  background-image: -webkit-radial-gradient(5px 5px, circle cover, #DEEEDE, orange);
+  background-image: radial-gradient(5px 5px 5deg, circle cover, #DEEEDE 0%, green 100%, red 95%);
+}
+/* Spinning, gradient circle; CSS only! */
+.animate {  
+  /* webkit chrome, safari, mobile */
+  -webkit-animation-name: spin; 
+  -webkit-animation-duration: 3s; /* 3 seconds */
+  -webkit-animation-iteration-count: infinite; 
+  -webkit-animation-timing-function: linear;
+
+  /* mozilla ff */
+  -moz-animation-name: spin; 
+  -moz-animation-duration: 3s; /* 3 seconds */
+  -moz-animation-iteration-count: infinite; 
+  -moz-animation-timing-function: linear;
+
+  /* microsoft ie */
+  -ms-animation-name: spin; 
+  -ms-animation-duration: 3s; /* 3 seconds */
+  -ms-animation-iteration-count: infinite; 
+  -ms-animation-timing-function: linear;
+}
+.ribbon-wrapper-green {
+  width: 85px;
+  height: 88px;
+  overflow: hidden;
+  position: absolute;
+  top: -3px;
+  right: -3px;
+}
+
+
+.ribbon-green {
+  font-family: "Helvetica Neue", "Helvetica", Arial, Verdana, sans-serif;
+  font-size : 14px;
+  color: #fff;
+  text-align: center; 
+  -webkit-transform: rotate(45deg);
+  -moz-transform:    rotate(45deg);
+  -ms-transform:     rotate(45deg);
+  -o-transform:      rotate(45deg);
+  position: relative;
+  padding: 7px 0;
+  left: -5px;
+  top: 15px;
+  width: 120px;
+  background-color: #BFDC7A;
+  background-image: -webkit-gradient(linear, left top, left bottom, from(#BFDC7A), to(#8EBF45));
+  background-image: -webkit-linear-gradient(top, #BFDC7A, #8EBF45);
+  background-image:    -moz-linear-gradient(top, #BFDC7A, #8EBF45);
+  background-image:     -ms-linear-gradient(top, #BFDC7A, #8EBF45);
+  background-image:      -o-linear-gradient(top, #BFDC7A, #8EBF45);  
+  -webkit-box-shadow: 0px 0px 3px rgba(0,0,0,0.3);
+  -moz-box-shadow:    0px 0px 3px rgba(0,0,0,0.3);
+  box-shadow:         0px 0px 3px rgba(0,0,0,0.3);
+}
+
+.ribbon-green:before, .ribbon-green:after {
+  content: "";
+  border-top:   3px solid #6e8900;   
+  border-left:  3px solid transparent;
+  border-right: 3px solid transparent;
+  position:absolute;
+  bottom: -3px;
+}
+
+.ribbon-green:before {
+  left: 0;
+}
+.ribbon-green:after {
+  right: 0;
+}
 .sugg_box
 {
 	position:relative;
@@ -1095,6 +1228,7 @@ div.points ul
 	list-style:none;
 	
 }
+
 .inside li
 {		
 	margin: 0px;	
@@ -1159,11 +1293,13 @@ div.points ul
 {
 	text-decoration:none;	
 }
-.ui-widget-header
-{
-	background: url(img/green_bg.png);
-}
 
+.picture_frame
+{	
+	background-image: -moz-linear-gradient(center top , #F6F2EC, #E2DBCE);
+	border: 4px solid #FFFFFF;
+	box-shadow: 0 0 2px rgba(0, 0, 0, 0.35), 0 85px 180px 0 #FFFFFF, 0 12px 8px -5px rgba(0, 0, 0, 0.85);
+}
 /*=================================Cover flip styling ============================*/
 
  .ui-jcoverflip {
