@@ -16,6 +16,15 @@ Yii::app()->clientScript->registerScriptFile(Yii::app()->request->baseUrl."/js/a
 </div>
 
 
+<div class = "row-fluid">
+	<div  class = "span10 prepend-top">
+	<?php
+		 $this->widget("BootAlert");		 
+	?>
+	</div>
+</div>
+
+
 <!--
 Quick Fix for delete Flash
 -->
@@ -211,9 +220,9 @@ Quick Fix for resume Flash
 							<div class = "span4"><?php echo CHtml::link('<i class = "icon-eye-open"></i> View', $package_title_link, array('class'=>'view_link')) ?></div>
 						</div>
 					
-						<div class = "row-fluid">
-							<div class = "span4"><?php echo CHtml::link('<i class = "icon-star-empty"></i> Feature', array('packages/feature', 'id'=>$current_package->id),array('class'=>'feature_link')) ?></div>
+						<div class = "row-fluid">							
 							<?php if($status != Packages::PENDING_APPROVAL):?>
+							<div class = "span4"><?php echo CHtml::link('<i class = "icon-star-empty"></i> Feature', array('packages/feature', 'id'=>$current_package->id),array('class'=>'feature_link')) ?></div>
 							<?php if($status == Packages::PAUSED):?>
 							<div class = "span4"><?php echo CHtml::link('<i class = "icon-play"></i> Resume', array('packages/resume', 'id'=>$current_package->id),array('class'=>'resume_link')) ?></div>
 							<?php else: ?>

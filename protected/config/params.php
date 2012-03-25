@@ -33,6 +33,13 @@ return array(
 						),
 	//'countries'=>require (dirname(__FILE__).'/countries.php'),
 	'timezones'=>require (dirname(__FILE__).'/timezones.php'),
+
+	'feature'=>array(
+				'currency_code'=>'ZAR',
+				'price'=>200,
+				'duration'=>30,
+			),	
+		
 	'hle'=>array(						
 						'Matric'=>'Matric',
 						'Bachelors Degree'=>'Bachelors Degree',
@@ -40,7 +47,8 @@ return array(
 						'PhD'=>'PhD',
 						'Self Taught'=>'Self Taught',
 						'Other'=>'Other',
-				),
+				),	
+		
 	'typeOfReg'=>array(
 						'None'=>'None',
 						'CC'=>'CC',

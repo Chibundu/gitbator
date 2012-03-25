@@ -28,8 +28,8 @@
  * The followings are the available model relations:
  * @property PackageDeliverables[] $packageDeliverables
  * @property PackageExcluded[] $packageExcluded
- * @property Serviceprovider $serviceproviders
- * @property Servicecategories $servicecategories
+ * @property Serviceprovider $serviceprovider
+ * @property Servicecategories $servicecategory
  * @property Currencies $currency
  */
 class Packages extends CActiveRecord
@@ -115,7 +115,7 @@ class Packages extends CActiveRecord
 			'packageExcluded' => array(self::HAS_MANY, 'PackageExcluded', 'packages_id'),
 			'packageDeliverables' => array(self::HAS_MANY, 'PackageDeliverables', 'packages_id'),
 			'serviceprovider' => array(self::BELONGS_TO, 'Serviceproviders', 'serviceproviders_id'),
-			'servicecategories' => array(self::BELONGS_TO, 'Servicecategories', 'servicecategories_id'),
+			'servicecategory' => array(self::BELONGS_TO, 'Servicecategories', 'servicecategories_id'),
 			'currency'=>array(self::BELONGS_TO, 'Currencies', 'currencies_id'),
 		);
 	}

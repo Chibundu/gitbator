@@ -1,6 +1,18 @@
 <?php
-
+/**
+ * Utility class to convert from one currency to another at the current exchange rate,
+ * using google API
+ * @author Mbagwu Chibundu
+ *
+ */
 class CurrencyConverter {
+	
+	/**
+	 * Converts currency values using the current exchage rate
+	 * @param string $from the currency to convert from e.g ZAR
+	 * @param double $amount the amount to be converted
+	 * @param string $to the currency to convert to
+	 */
 	public static function convert($from, $amount, $to)
 	{
 		//make string to be put in API

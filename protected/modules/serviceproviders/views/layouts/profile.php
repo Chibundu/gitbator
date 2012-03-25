@@ -13,6 +13,7 @@
 	 $sp = $infoBox['sp'];	 
 	 $v_count = $sp->getVerificationCount();
 	 $portfolioSize = (($sp->portfolioSize * 100)/$params['maxPortfolioSize']);
+	 $portfolioCount = count($sp->portfolio);
 	 $id = $sp->normalizeSPId();
 	 
 	 $verification = $sp->verification;
@@ -49,6 +50,8 @@
 	 $timeBox = Time::ConvertTo12HrFormat($sp->currentTime);
 	 $time = $timeBox['time'];
 	 $date = $timeBox['date'];
+	 
+	 
  ?>
  
  
@@ -158,11 +161,11 @@
    		 ),    
 	));
 	?>
-		<div class="notice_panel rounded prepend-top">
+		<div class="notice_panel prepend-top">
 		<div class = "nt-head top-rounded">
 		<h4>Verifications<span class="label default"><?php echo $sp->getVerificationCount(); ?></span></h4>
 		</div>
-		<div>
+		<div class = "notice_panel_content">
 			<div class = "nt-item-row-first">
 				<div class = "three-fifths left">
 					<i class = "icon-envelope"></i>Email
@@ -222,11 +225,11 @@
    		 ),    
 	));
 	?>
-		<div class="notice_panel rounded prepend-top">
+		<div class="notice_panel prepend-top">
 		<div class = "nt-head top-rounded">
 		<h4>Team<span class="label  label-success"><?php echo count($teamMembers); ?></span></h4>
 		</div>
-		<div>
+		<div class = "notice_panel_content">
 			<?php foreach ($teamMembers as $teamMember):?>
 				<div class = "nt-item-row-first">
 					<div class = "half left">
@@ -254,11 +257,11 @@
    		 ),    
 	));
 	?>
-		<div class="notice_panel rounded prepend-top">
+		<div class="notice_panel prepend-top">
 		<div class = "nt-head top-rounded">
-			<h4>Portfolio<span class="label success"><?php echo count($sp->portfolio); ?></span></h4>
+			<h4>Portfolio<span class="label <?php echo ($portfolioCount > 0)? 'label-success': 'label-default'?>"><?php echo $portfolioCount; ?></span></h4>
 		</div>
-		<div>	
+		<div class = "notice_panel_content">	
 			<div class = "nt-item-row-first" style="background-color: #fff;">
 					<?php 
 								$this->widget('zii.widgets.jui.CJuiProgressBar', array(

@@ -1,9 +1,11 @@
 <?php
 
+class PackagesTest extends CTestCase {
 
-class PackagesTest extends CDbTestCase {
-
-	
+	public function testSomething()
+	{
+		$this->assertTrue(true);
+	}
 	
 }
 

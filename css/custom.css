@@ -458,7 +458,11 @@ dl.tabs.vertical dd a
 	font-size:14px;
 }
 
-
+.large-btn
+{
+	font-size: 1.5em;
+	padding: 10px 20px;
+}
 
 
 
@@ -471,6 +475,7 @@ dl.tabs.vertical dd a
 #secondary-bar
 {		
 	/*background: url(img/sec_bg.png) repeat-x;*/
+	
 	min-height: 35px;
 	padding-top: 3.8%;
 	padding-bottom: 5px;
@@ -676,14 +681,18 @@ dl.tabs.vertical dd a
 }
 .notice_panel
 {
-	padding: 0px 0px 20px 0px;
-	border: 1px solid #DFDFDF;
+	padding: 0px 0px 20px 0px;	
 	background: #fff;	
-	box-shadow: 0 2px 5px rgba(0,0,0,0.15);
-	-webkit-box-shadow: 0 2px 5px rgba(0,0,0,0.15);
-	-moz-box-shadow: 0 2px 5px rgba(0,0,0,0.25);
 	margin: 0 0 10px 0;	
 
+}
+.notice_panel_content
+{
+	border: 1px solid #f0f0f0;
+	box-shadow: 0 2px 5px rgba(0,0,0,0.15);	
+	-webkit-box-shadow: 0 2px 5px rgba(0,0,0,0.15);
+	-moz-box-shadow: 0 2px 5px rgba(0,0,0,0.25);
+	margin: 0 0 20px 0;	
 }
 .nt-item-row-first
 {
@@ -703,13 +712,15 @@ dl.tabs.vertical dd a
 	word-break:break-all;
 }
 .nt-head
-{
-	margin-bottom: 20px;
-	padding-left: 5px;	
+{	
+	padding: 5px;	
 	background: #e8e8e8;
 	background: -moz-linear-gradient(top, #EEE 0%, #e8e8e8 100%);
 	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#EEE), color-stop(100%, #e8e8e8));
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#EEE', endColorstr='#e8e8e8',GradientType=0 );	
+	box-shadow: 0 2px 5px rgba(0,0,0,0.15);	
+	-webkit-box-shadow: 0 2px 5px rgba(0,0,0,0.15);
+	-moz-box-shadow: 0 2px 5px rgba(0,0,0,0.25);		
 }
 .phone
 {
@@ -777,6 +788,14 @@ span.required
 {
 	border: 1px solid #efefef;
 }
+.bottom_bordered
+{
+	border-bottom: 1px solid #efefef;
+}
+.no_bottom_border
+{
+	border-bottom: none;
+}
 
 .offer_box
 {
@@ -811,6 +830,13 @@ span.required
 	-webkit-border-radius:3px;
 	border-radius: 3px;
 	color:#fff;
+}
+.thin_gold_border
+{
+	position:relative;
+	top:-2px;
+	left:-2px;
+	border: 2px solid #F0CF6C;
 }
 .light_gold_border
 {
@@ -944,7 +970,13 @@ div.points ul
 {
 	margin: 0;
 }
-
+.info_alert
+{
+	background: url(img/circle_info.png) no-repeat left center;
+	min-height: 26px;
+	padding-left: 30px;
+	padding-top: 10px;
+}
 .blue_bg
 {
 	background:url(img/splash_bg.jpg) repeat-x;
@@ -1196,6 +1228,7 @@ div.points ul
 	list-style:none;
 	
 }
+
 .inside li
 {		
 	margin: 0px;	
