@@ -71,7 +71,7 @@ class Qualification extends CActiveRecord
 		// class name for the relations automatically generated below.
 		return array(
 			'serviceProviders' => array(self::BELONGS_TO, 'Serviceproviders', 'serviceProviders_id'),
-			'qualificationCategory' => array(self::BELONGS_TO, 'Qualificationcategory', 'qualificationCategory_id'),
+			'qualificationCategory' => array(self::BELONGS_TO, 'QualificationCategory', 'qualificationCategory_id'),
 			'holder'=>array(self::BELONGS_TO, 'Teammembers', 'teammember_id'),			
 		);
 	}
@@ -106,7 +106,7 @@ class Qualification extends CActiveRecord
 		// should not be searched.
 
 		$criteria=new CDbCriteria;
-
+		 
 		$criteria->compare('id',$this->id);
 		$criteria->compare('qual',$this->qual,true);
 		$criteria->compare('sfrom',$this->sfrom,true);

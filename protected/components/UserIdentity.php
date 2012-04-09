@@ -19,8 +19,9 @@ class UserIdentity extends CUserIdentity
 		$role = NULL;
 		$user = NULL;
 		$role_model = Roles::model()->findByAttributes(array('username'=>$username));
+		
 		if($role_model != NULL)
-		{
+		{			
 			$role = $role_model->role;
 			if($role == Roles::TeamLeader || $role == Roles::TeamMember)
 			{
@@ -28,6 +29,15 @@ class UserIdentity extends CUserIdentity
 				
 				if(($returnUrl = Yii::app()->user->returnUrl) == Yii::app()->request->baseUrl. '/index.php'){		
 					Yii::app()->user->returnUrl = array('/serviceproviders');		
+				}
+			}
+			else if($role == Roles::Enterpreneur)
+			{
+				
+				$user = EtAuth::model()->with('users')->findByAttributes(array('username'=>$username));
+				
+				if(($returnUrl = Yii::app()->user->returnUrl) == Yii::app()->request->baseUrl. '/index.php'){				
+					Yii::app()->user->returnUrl = array('/entrepreneurs');
 				}
 			}
 		}

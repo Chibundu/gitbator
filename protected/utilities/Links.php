@@ -24,6 +24,18 @@ class Links
 				'Packages'=>array('packages'),
 				'Settings'=>array('settings'),
 			);
+	
+	public static $et_main_links = array(
+				'Dashboard'=>array('default'),
+				'Packages'=>array('packages'),
+				'Jobs'=>array('jobs'),
+				'Classroom'=>array('classroom'),
+				'Mentor'=>array('mentor'),
+				'Workcenter'=>array('workcenter'),
+				'Payment'=>array('payment'),
+				'Profile'=>array('profile'),
+				'Messages'=>array('message'),
+			);
 	/**	 
 	 * See @link Links::sp_main_links for explanations. This is the menu map for admin module
 	 * @var array
@@ -39,59 +51,69 @@ class Links
 	 * Used by the SideMenu Component to populate a vertical sidebar/similar menu with links associated with a particular controller
 	 * @return an array of links(functions) associated with a given controller
 	 */
-	public function getLinks()
+	public function getLinks($module)
 	{
-		switch ($this->controller) {
-			case 'profile':	
-			case 'contact':	
-			case 'team':
-			case 'qualification':
-			case 'portfolios':	
-			case 'services':	
-			case 'verifications': 
-			case 'email':
-			case 'public':	
-				$sp = Miscellaneous::getServiceProvider();
-				return array(
-						array( 'text'=>'Overview','url'=>array('profile/')),
-						array( 'text'=>'Contact Info','url'=>array('contact/')),
-						array( 'text'=>'Team','url'=>array('team/')),
-						array( 'text'=>'Portfolio','url'=>array('portfolios/')),
-						array( 'text'=>'Qualifications','url'=>array('qualification/')),
-						array( 'text'=>'Services','url'=>array('services/')),
-						array( 'text'=>'Verifications','url'=>array('verifications/')),
-						array( 'text'=>'Email','url'=>array('email/')),
-						array( 'text'=>'Public Profile','url'=>array('public/index',  'displayName'=>$sp->displayName)),
+		if($module == 'serviceproviders')
+		{
+			switch ($this->controller) {
+				case 'profile':
+				case 'contact':
+				case 'team':
+				case 'qualification':
+				case 'portfolios':
+				case 'services':
+				case 'verifications':
+				case 'email':
+				case 'public':
+					$sp = Miscellaneous::getServiceProvider();
+					return array(
+							array( 'text'=>'Overview','url'=>array('profile/')),
+							array( 'text'=>'Contact Info','url'=>array('contact/')),
+							array( 'text'=>'Team','url'=>array('team/')),
+							array( 'text'=>'Portfolio','url'=>array('portfolios/')),
+							array( 'text'=>'Qualifications','url'=>array('qualification/')),
+							array( 'text'=>'Services','url'=>array('services/')),
+							array( 'text'=>'Verifications','url'=>array('verifications/')),
+							array( 'text'=>'Email','url'=>array('email/')),
+							array( 'text'=>'Public Profile','url'=>array('public/index',  'displayName'=>$sp->displayName)),
 					);
-			break;
-			
-			
-			case 'settings':
-				return array(
-							array( 'text'=>'Overview','url'=>array('settings/overview')),
-							array( 'text'=>'Currency','url'=>array('settings/currency')),
-							array( 'text'=>'TimeZone','url'=>array('settings/timezone')),
-							array( 'text'=>'Availability','url'=>array('settings/availability')),						
-						//	array( 'text'=>'Payment','url'=>array('settings/payment'))
-						);
-			break;
-			
-			case 'accessControl':
-				return array(
-					array( 'text'=>'General','url'=>array('accessControl/index')),
-					array( 'text'=>'Create Auth Item','url'=>array('accessControl/create')),
-					array( 'text'=>'Assign Privileges','url'=>array('accessControl/assign')),					
-				);
-			
-			default:
-				array();
-			break;
+					break;
+						
+						
+				case 'settings':
+					return array(
+					array( 'text'=>'Overview','url'=>array('settings/overview')),
+					array( 'text'=>'Currency','url'=>array('settings/currency')),
+					array( 'text'=>'TimeZone','url'=>array('settings/timezone')),
+					array( 'text'=>'Availability','url'=>array('settings/availability')),
+					//	array( 'text'=>'Payment','url'=>array('settings/payment'))
+					);
+					break;			
+						
+				default:
+					array();
+					break;
+			}
 		}
+		else if($module == 'admin')
+		{
+			switch($module)
+			{							
+				case 'accessControl':
+					return array(
+						array( 'text'=>'General','url'=>array('accessControl/index')),
+						array( 'text'=>'Create Auth Item','url'=>array('accessControl/create')),
+						array( 'text'=>'Assign Privileges','url'=>array('accessControl/assign')),
+					);
+					break;
+				default:
+					array();
+					break;
+			}
+		}
+		
 	}
 	
-	public static function getProfileControllers()
-	{
-		return array('profile', 'contact', 'team', 'qualification', 'portfolios', 'services', 'verifications', 'email', 'public');
-	}
+	
 }
 ?>

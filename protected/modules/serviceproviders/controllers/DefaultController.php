@@ -6,15 +6,20 @@ class DefaultController extends Controller
 	public function accessRules()
 	{
 		return array(
-		array(
-			'allow',
-			'roles'=>array('sp-teammember','sp-teamleader'),
-		),
-		array(		
-			'deny',
-			'users'=>array('*'),			
+			array(
+				'allow',
+				'actions'=>array('error'),
+				'users'=>array('*'),
 			),
-		);
+			array(
+				'allow',
+				'roles'=>array('sp-teammember','sp-teamleader'),
+			),
+			array(		
+				'deny',
+				'users'=>array('*'),			
+				),
+			);
 	}
 	public function filters()
 	{

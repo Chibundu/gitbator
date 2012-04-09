@@ -73,7 +73,7 @@ class ContactController extends Controller
 	}
 	public function accessRules()
 	{
-		return array(
+		return array(		
 			array('allow', 'roles'=>array('sp-teamleader','sp-teammember')),
 			array('deny', 'users'=>array('*'))
 		);

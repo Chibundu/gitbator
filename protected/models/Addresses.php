@@ -10,19 +10,17 @@
  * @property string $city
  * @property string $province
  * @property string $country
- * @property string $postal_code 
- * @property string $website
- * @property string $phone_1
- * @property string $phone_2
- * @property integer $tbl_users_id
+ * @property string $postal_code
+ * @property integer $users_id
  *
  * The followings are the available model relations:
- * @property Users $user
+ * @property Users $users
  */
 class Addresses extends CActiveRecord
 {
 	/**
 	 * Returns the static model of the specified AR class.
+	 * @param string $className active record class name.
 	 * @return Addresses the static model class
 	 */
 	public static function model($className=__CLASS__)
@@ -46,19 +44,14 @@ class Addresses extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('first_line, city, tbl_users_id, phone_1', 'required'),
-			array('tbl_users_id, phone_1,phone_2', 'numerical', 'integerOnly'=>true),
-			array('second_line', 'length', 'max'=>100),
-			array('first_line', 'length', 'min'=>5, 'max'=>100),
-			array('city, province, country', 'length', 'min'=>2, 'max'=>45),
+			array('first_line, city, users_id', 'required'),
+			array('users_id', 'numerical', 'integerOnly'=>true),
+			array('first_line, second_line', 'length', 'max'=>100),
+			array('city, province, country', 'length', 'max'=>45),
 			array('postal_code', 'length', 'max'=>10),
-			array('website', 'length', 'max'=>128),						
-			array('website','url'),
-			array('phone_1, phone_2', 'length', 'min'=>9,'max'=>13),
-			array('phone_1, phone_2', 'numerical'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, first_line, second_line, city, province, country, postal_code, website, phone_1, phone_2, tbl_users_id', 'safe', 'on'=>'search'),
+			array('id, first_line, second_line, city, province, country, postal_code, users_id', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -70,7 +63,7 @@ class Addresses extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'user' => array(self::BELONGS_TO, 'Users', 'tbl_users_id'),
+			'users' => array(self::BELONGS_TO, 'Users', 'users_id'),
 		);
 	}
 
@@ -86,11 +79,8 @@ class Addresses extends CActiveRecord
 			'city' => 'City',
 			'province' => 'Province',
 			'country' => 'Country',
-			'postal_code' => 'Postal Code',			
-			'website' => 'Website',
-			'phone_1' => 'Phone 1',
-			'phone_2' => 'Phone 2',
-			'tbl_users_id' => 'Tbl Users',
+			'postal_code' => 'Postal Code',
+			'users_id' => 'Users',
 		);
 	}
 
@@ -111,13 +101,10 @@ class Addresses extends CActiveRecord
 		$criteria->compare('city',$this->city,true);
 		$criteria->compare('province',$this->province,true);
 		$criteria->compare('country',$this->country,true);
-		$criteria->compare('postal_code',$this->postal_code,true);		
-		$criteria->compare('website',$this->website,true);
-		$criteria->compare('phone_1',$this->phone_1,true);
-		$criteria->compare('phone_2',$this->phone_2,true);
-		$criteria->compare('tbl_users_id',$this->tbl_users_id);
+		$criteria->compare('postal_code',$this->postal_code,true);
+		$criteria->compare('users_id',$this->users_id);
 
-		return new CActiveDataProvider(get_class($this), array(
+		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
 		));
 	}

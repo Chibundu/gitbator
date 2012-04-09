@@ -6,6 +6,7 @@
 	$app->clientScript->registerScriptFile("$baseUrl/js/imgAreaSelect/jquery.imgareaselect.pack.js", CClientScript::POS_HEAD);
 	$app->clientScript->registerCssFile("$baseUrl/css/imgAreaSelect/imgareaselect-animated.css");
  ?>
+
 <div id = "saved_message" style = "display:none;" class = "three-quarters center">
 <?php $this->widget("ext.SimpleFlash", array("css"=>"alert-success","message"=>'<h3>Thank You!</h3> Your Service Package picture was successfully saved. We will now be returning you to the form shortly..')); ?>
 </div>
@@ -54,8 +55,8 @@
 	var fixedWidth = 260;
 	var fixedHeight = 180;
 	
-	var maxWidth = 360;
-	var maxHeight = 250;
+	var maxWidth = 260;
+	var maxHeight = 180;
 	
 	var cWidth = [0,0];
 	var cHeight = [0,0];
@@ -111,9 +112,10 @@
 				left:$("#left").val(),
 				top:$("#top").val(),
 				width:$("#width").val(),
-				height:$("#height").val(),
+				height:$("#height").val(),				
 				scaledWidth:$("#scaledWidth").val(),
 				scaledHeight:$("#scaledHeight").val(),
+				edit:$("#edit").val(),
 				YII_CSRF_TOKEN:csrf_data
 				},
 			success : function(data){
@@ -188,6 +190,8 @@
 							aspectRatio: fixedWidth.toString() + \':\' +fixedHeight.toString() ,
 							maxWidth: maxWidth,
 							maxHeight: maxHeight,
+							minWidth: 144,
+							minHeight: 100,
 							x1: cWidth[0],
 							y1: cHeight[0],
 							x2: cWidth[1],
@@ -221,6 +225,7 @@
     	$("#height").val(fixedHeight);
     	$("#scaledWidth").val(preview_image.width());
     	$("#scaledHeight").val(preview_image.height());
+    	$("#edit").val("proceed");
 	 }
 	 
 	 //return an array for central positioning (x1, x2) or (y1, y2) based on what is passed in as parameters

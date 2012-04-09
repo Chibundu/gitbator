@@ -540,11 +540,11 @@ class Serviceproviders extends CActiveRecord
 	 * @return integer the number of verified data
 	 */
 	public function getVerificationCount()
-	{
-		$this->refresh();
+	{		
 		$count = 0;
-		
+				
 		$count += count($this->verifiedQualifications);
+		
 		if($this->verification->email == true)
 		{			
 			$count++;

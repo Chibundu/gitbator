@@ -8,3 +8,13 @@ in /home/customercare/public_html/vcubator/index.php (13)
 in /home/customercare/public_html/vcubator/protected/controllers/SiteController.php (240)
 in /home/customercare/public_html/vcubator/protected/controllers/SiteController.php (105)
 in /home/customercare/public_html/vcubator/index.php (13)
+2012/03/26 16:48:42 [trace] [registration] Thank you for signing up on the Vcubator.<br /> To activate your account please, <a href="http://thevcubator.com/site/activate/?req=mbagwu.c@gmail.com&type=sp&code=e58c3a2529634e948c4c9b8a269cf895">Click Here</a>
+		.
+in /home/customercare/public_html/vcubator/protected/controllers/SiteController.php (282)
+in /home/customercare/public_html/vcubator/protected/controllers/SiteController.php (105)
+in /home/customercare/public_html/vcubator/index.php (13)
+2012/03/27 17:35:17 [trace] [registration] Thank you for signing up on the Vcubator.<br /> To activate your account please, <a href="http://thevcubator.com/site/activate/?req=mbagwu.c@gmail.com&type=sp&code=cd9718c67e6dfb90a86947d39e19fe40">Click Here</a>
+		.
+in /home/customercare/public_html/vcubator/protected/controllers/SiteController.php (283)
+in /home/customercare/public_html/vcubator/protected/controllers/SiteController.php (105)
+in /home/customercare/public_html/vcubator/index.php (13)

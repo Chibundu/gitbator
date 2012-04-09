@@ -10,6 +10,8 @@
  *
  * The followings are the available model relations:
  * @property Services[] $services
+ * @property int $ordinaryPackagesCount
+ * @property Packages $packages
  */
 class Servicecategories extends CActiveRecord
 {
@@ -57,6 +59,10 @@ class Servicecategories extends CActiveRecord
 			'services' => array(self::HAS_MANY, 'Services', 'categories_id'),
 			'serviceCount'=>array(self::STAT,'Services','categories_id'),
 			'skills'=>array(self::HAS_MANY, 'Skills', array('category'=>'id'), 'order'=>'skills.name ASC'),
+			'packages'=>array(self::HAS_MANY, 'Packages', 'servicecategories_id'),
+			'ordinaryPackagesCount'=>array(self::STAT, 'Packages', 'servicecategories_id', 'condition'=>'featured_priority < '. Packages::HIGH),
+			'featuredPackages'=>array(self::HAS_MANY, 'Packages', 'servicecategories_id', 'condition'=>'featured_priority >='.Packages::HIGH, 'order'=>'views ASC,featured_time ASC'),
+			'featuredPackagesCount'=>array(self::STAT, 'Packages', 'servicecategories_id'),
 		);
 	}
 

@@ -1,4 +1,5 @@
 <?php
+Yii::import('serviceproviders.models.*');
 /**
  * Utility function for order processing
  * @author Mbagwu Chibundu

@@ -7,23 +7,28 @@
  * @property integer $id
  * @property string $firstname
  * @property string $lastname
- * @property string $email
  * @property string $sex
+ * @property string $email
  * @property string $pic
  * @property string $dob
  * @property string $highestLevelOfEducation
  * @property string $lastUpdateTime
  * @property string $create_time
+ * @property string $phone
+ * @property string $website
  *
  * The followings are the available model relations:
  * @property Addresses[] $addresses
  * @property Bizinfo[] $bizinfos
+ * @property Jobs[] $jobs
+ * @property Recommendations[] $recommendations
  * @property Mentors[] $tblMentors
  */
 class Users extends CActiveRecord
 {
 	/**
 	 * Returns the static model of the specified AR class.
+	 * @param string $className active record class name.
 	 * @return Users the static model class
 	 */
 	public static function model($className=__CLASS__)
@@ -47,17 +52,14 @@ class Users extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('firstname, lastname, sex, dob, highestLevelOfEducation', 'required'),
-			array('firstname, lastname, highestLevelOfEducation', 'length', 'min'=>2, 'max'=>45),
-			array('sex', 'length', 'min'=>4, 'max'=>6),
-			array('email','length', 'max'=>30),
-			array('email','email'),
-			array('email','unique'),
-			array('pic, create_time', 'safe'),			
-			array('dob', 'date', 'format'=>'dd/MM/yyyy'),
+			array('firstname, lastname', 'required'),
+			array('firstname, lastname, highestLevelOfEducation, phone', 'length', 'max'=>45),
+			array('sex', 'length', 'max'=>6),
+			array('email', 'length', 'max'=>128),
+			array('pic, dob, lastUpdateTime, create_time, website', 'safe'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, firstname, lastname, sex, pic, dob, highestLevelOfEducation, lastUpdateTime, create_time', 'safe', 'on'=>'search'),
+			array('id, firstname, lastname, sex, email, pic, dob, highestLevelOfEducation, lastUpdateTime, create_time, phone, website', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -69,8 +71,10 @@ class Users extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'addresses' => array(self::HAS_MANY, 'Addresses', 'tbl_users_id'),
+			'addresses' => array(self::HAS_MANY, 'Addresses', 'users_id'),
 			'bizinfos' => array(self::HAS_MANY, 'Bizinfo', 'tbl_users_id'),
+			'jobs' => array(self::HAS_MANY, 'Jobs', 'users_id'),
+			'recommendations' => array(self::HAS_MANY, 'Recommendations', 'users_id'),
 			'tblMentors' => array(self::MANY_MANY, 'Mentors', '{{users_has_tbl_mentors}}(tbl_users_id, tbl_mentors_id)'),
 		);
 	}
@@ -85,11 +89,14 @@ class Users extends CActiveRecord
 			'firstname' => 'Firstname',
 			'lastname' => 'Lastname',
 			'sex' => 'Sex',
+			'email' => 'Email',
 			'pic' => 'Pic',
-			'dob' => 'Date of Birth',
+			'dob' => 'Dob',
 			'highestLevelOfEducation' => 'Highest Level Of Education',
 			'lastUpdateTime' => 'Last Update Time',
 			'create_time' => 'Create Time',
+			'phone' => 'Phone',
+			'website' => 'Website',
 		);
 	}
 
@@ -108,18 +115,22 @@ class Users extends CActiveRecord
 		$criteria->compare('firstname',$this->firstname,true);
 		$criteria->compare('lastname',$this->lastname,true);
 		$criteria->compare('sex',$this->sex,true);
+		$criteria->compare('email',$this->email,true);
 		$criteria->compare('pic',$this->pic,true);
 		$criteria->compare('dob',$this->dob,true);
 		$criteria->compare('highestLevelOfEducation',$this->highestLevelOfEducation,true);
 		$criteria->compare('lastUpdateTime',$this->lastUpdateTime,true);
 		$criteria->compare('create_time',$this->create_time,true);
+		$criteria->compare('phone',$this->phone,true);
+		$criteria->compare('website',$this->website,true);
 
-		return new CActiveDataProvider(get_class($this), array(
+		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
 		));
 	}
+	
 	protected function beforeSave()
-	{		
+	{
 		if(parent::beforeSave())
 		{
 			$this->setCreateTime();
@@ -129,25 +140,25 @@ class Users extends CActiveRecord
 				if($column->dbType == 'date')
 				{
 					$this->$columnName = date('Y-m-d',CDateTimeParser::parse($this->$columnName,'dd/MM/yyyy'));
-				}				
+				}
 			}
 			return true;
 		}
-		else 
+		else
 			return false;
 	}
 	protected function afterFind()
-	{		
-			foreach($this->metadata->tableSchema->columns as $columnName=>$column)
+	{
+		foreach($this->metadata->tableSchema->columns as $columnName=>$column)
+		{
+			if (!strlen($this->$columnName)) continue;
+			if($column->dbType == 'date')
 			{
-				if (!strlen($this->$columnName)) continue;
-				if($column->dbType == 'date')
-				{
-					$this->$columnName = Yii::app()->dateFormatter->format('dd/MM/yyyy', CDateTimeParser::parse($this->$columnName,'yyyy-MM-dd'));
-				}				
+				$this->$columnName = Yii::app()->dateFormatter->format('dd/MM/yyyy', CDateTimeParser::parse($this->$columnName,'yyyy-MM-dd'));
 			}
-			return true;
-		
+		}
+		return true;
+	
 	}
 	private function setCreateTime()
 	{

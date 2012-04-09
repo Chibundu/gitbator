@@ -44,7 +44,8 @@
 	 $completeness = $infoBox['completeness'];
 	  
 	 $page_links = new Links($this->id);
-	 $links = $page_links->getLinks();
+	 
+	 $links = $page_links->getLinks($this->module->id);
 	 $user = $app->user;
 	 
 	 $timeBox = Time::ConvertTo12HrFormat($sp->currentTime);
@@ -59,7 +60,7 @@
       <div class="row-fluid prepend-top">
         <div class="span2">
         <ul class="thumbnails">
-       		<li class = "span10">       		
+       		<li class = "span2">       		
       			<?php echo CHtml::link(CHtml::image(($teamMember->profile_picture != NULL)?Miscellaneous::getRelativeProfilePicturePath().$teamMember->profile_picture:$baseUrl."/css/img/profile_silhouette.png", 'Profile Picture'), array('/serviceproviders/profile/profilePic'), array('class'=>'thumbnail', 'rel'=>'tooltip', 'data-original-title'=>'Change Profile Picture')); ?>    		
        		</li>
        	</ul>  
@@ -153,14 +154,15 @@
 		</div>
         <?php echo $content; ?>		
         </div><!--/span-->
-        <div class = "span3">
-       			<div class="span10 prepend-top">	
-	<?php $this->beginWidget('zii.widgets.jui.CJuiDraggable', array(
-   	 'options'=>array(
-     	   'cursor'=>'move',
-   		 ),    
-	));
-	?>
+        <div class = "span3 prepend-top">
+       		
+		<?php 
+			$this->beginWidget('zii.widgets.jui.CJuiDraggable', array(
+		   	 'options'=>array(
+		     	   'cursor'=>'move',
+		   		 ),    
+			));
+		?>
 		<div class="notice_panel prepend-top">
 		<div class = "nt-head top-rounded">
 		<h4>Verifications<span class="label default"><?php echo $sp->getVerificationCount(); ?></span></h4>
@@ -281,7 +283,7 @@
 		</div>
 		<?php $this->endWidget();?>
 		
-	</div>
+	
         </div><!-- span -->
       </div><!--/row-->
   </div>

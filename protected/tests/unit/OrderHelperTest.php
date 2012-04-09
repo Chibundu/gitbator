@@ -1,4 +1,5 @@
 <?php
+Yii::import('application.protected.modules.serviceproviders.models.*');
 /**
  * OrderHelper test case.
  */
@@ -11,8 +12,7 @@ class OrderHelperTest extends CDbTestCase {
 	private $OrderHelper;
 	
 	public $fixtures = array(
-				'serviceproviders'=>'Serviceproviders',
-				'orders'=>'SpOrder',
+				'serviceproviders'=>'Serviceproviders',				
 			);
 	
 	/**
@@ -56,7 +56,7 @@ class OrderHelperTest extends CDbTestCase {
 				'user_id'=>1,
 				'orders'=>array(
 						array(
-							'item'=>SaleItems::PACKAGE_FEATURE,
+							'item'=>'VSI-001',
 							'description'=>"bla, bla, bla",
 							'currency_id'=>3,
 							'unit_price'=>200,
@@ -64,7 +64,7 @@ class OrderHelperTest extends CDbTestCase {
 							'discount'=>25,
 						),
 						array(
-							'item'=>SaleItems::PACKAGE_FEATURE,
+							'item'=>'VSI-001',
 							'description'=>"bla, bla, bla",
 							'currency_id'=>3,
 							'unit_price'=>200,
@@ -159,14 +159,14 @@ class OrderHelperTest extends CDbTestCase {
 						'quantity'=>4,
 						'unit_price'=>50,
 						'discount'=>25,
-						'item'=>SaleItems::PACKAGE_FEATURE,
+						'item'=>'VSI-001',
 						'description'=>'bla, bla, bla'
 				),
 				array(
 						'quantity'=>2,
 						'unit_price'=>50,
 						'discount'=>25,
-						'item'=>SaleItems::PACKAGE_FEATURE,
+						'item'=>'VSI-001',
 						'description'=>'bla, bla, bla'
 				),
 		);
@@ -175,7 +175,7 @@ class OrderHelperTest extends CDbTestCase {
 		                                 
 		$this->assertEquals(OrderHelper::getOrderTotal($orders), $summary['total'], "Cannot validate OrderHelper::getOrderSummary: Unexpected 'total' returned");
 		$this->assertEquals('bla, bla, bla + bla, bla, bla', $summary['descriptions'], "Cannot validate OrderHelper::getOrderSummary: Unexpected 'descriptions' returned");
-		$this->assertEquals(SaleItems::PACKAGE_FEATURE.' + '.SaleItems::PACKAGE_FEATURE, $summary['items'], "Cannot validate OrderHelper::getOrderSummary: Unexpected 'items' returned");
+		$this->assertEquals('VSI-001 + VSI-001', $summary['items'], "Cannot validate OrderHelper::getOrderSummary: Unexpected 'items' returned");
 	}
 
 }

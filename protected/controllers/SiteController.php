@@ -46,14 +46,14 @@ class SiteController extends Controller
 		}		
 		
 		if(isset($_POST['RegForm']))
-		{			
+		{				
 			$reg->attributes = $_POST['RegForm'];
 			if($reg->validate())
-			{
+			{				
 				$authManager = Yii::app()->authManager;
 				$account_type = $reg->account_type;
 				if($account_type == 'SPC' || $account_type == 'SPF'){										
-					
+					Yii::import('serviceproviders.models.*');
 					$sp = new Serviceproviders();
 					$sp->currency_id = 3;
 					$sp->activationCode = $activation_code =  Miscellaneous::generateRandom(9);
@@ -114,6 +114,49 @@ class SiteController extends Controller
 						$this->redirect($user->returnUrl);
 					}			
 					
+				}
+				else if($account_type == 'ET')
+				{
+					Yii::import('entrepreneurs.models.*');
+					$user = new Users();
+					$user->firstname = $reg->firstname;
+					$user->lastname = $reg->lastname;
+					$user->email = $reg->email;
+					$user->phone = $reg->phone;
+					$user->save(false);
+					
+					$address = new Addresses();
+					$address->users_id = $user->id;
+					$address->country = $reg->country;
+					$address->save(false);
+					
+					$auth = new EtAuth();
+					$auth->users_id = $user->id;
+					$auth->username = $reg->email;
+					$auth->password = $reg->password;
+					$auth->encryptPassword();
+					$auth->save(false);
+					
+					$role = new Roles();
+					$role->username = $reg->email;
+					$role->role = Roles::Enterpreneur;
+					$role->save(false);
+						
+					$authManager->assign('entrepreneur', $reg->email);
+					
+					$login =  new LoginForm();
+					$login->username = $reg->email;
+					$login->password = $reg->password;
+					
+					Yii::app()->user->returnUrl = Yii::app()->baseUrl.'/entrepreneurs/';
+					
+					if($login->login()){
+						$this->redirect(Yii::app()->user->returnUrl);
+					}
+					else
+					{
+						echo 'hee'; exit;
+					}
 				}			
 									
 			}

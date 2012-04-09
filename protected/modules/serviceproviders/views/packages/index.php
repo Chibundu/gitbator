@@ -9,9 +9,14 @@ Yii::app()->clientScript->registerScriptFile(Yii::app()->request->baseUrl."/js/a
 
 
 ?>
-<div class = "row-fluid">
-	<div  class = "span10 prepend-top">
-	<h2>Service Packages(<?php echo $itemCount; ?>)</h2>
+<div class = "row-fluid prepend-top">
+	<div  class = "span4">
+	<h2>Service Packages(<?php echo $total; ?>)</h2>
+	</div>
+	<div  class = "span8">
+	<div class = "right">
+	<?php $this->widget('BootPager', array('pages'=>$pages,'prevPageLabel'=>'&laquo;', 'nextPageLabel'=>'&raquo;', 'htmlOptions'=>array('class'=>'pagination')));?>
+	</div>
 	</div>
 </div>
 
@@ -170,7 +175,7 @@ Quick Fix for resume Flash
 						<?php endif; ?>
 					<?php echo CHtml::image("$baseUrl/$packages_dir".$current_package->picture, '', array('height'=>'180px'));?>
 					<div class = "caption">
-						<h5><?php echo CHtml::link($current_package->title, $package_title_link)?></h5>
+						<h5 class = "ellipsis"><?php echo CHtml::link($current_package->title, $package_title_link)?></h5>
 							<?php $discount = $current_package->discount;?>
 							<div class = "row-fluid prepend-top">
 								<?php if($discount > 0):?>
@@ -183,7 +188,7 @@ Quick Fix for resume Flash
 											 </div>
 										</div>
 										<div style = "position: relative;">
-											 <div style = "position: absolute; top: -30px; font-weight: bold; color: #fff; font-size: 0.8em;">
+											 <div style = "position: absolute; top: -30px; font-weight: bold; color: #fff; font-size: 0.7em;">
 												 &nbsp;- <?php echo $discount;?>%
 											 </div>
 										</div>
@@ -212,7 +217,7 @@ Quick Fix for resume Flash
 							
 					
 				</div>
-				<div class = "thumbnail" style = "margin-top:3px;">
+				<div class = "thumbnail frame" style = "margin-top:3px;">
 					<div class = "caption" style = "padding: 0px;">
 						<div class = "row-fluid">
 							<div class = "span4"><?php echo CHtml::link('<i class = "icon-pencil"></i> Edit', array('packages/update', 'id'=>$current_package->id),array('class'=>'update_link')) ?></div>
@@ -222,7 +227,9 @@ Quick Fix for resume Flash
 					
 						<div class = "row-fluid">							
 							<?php if($status != Packages::PENDING_APPROVAL):?>
+								<?php if($current_package->featured_priority < Packages::HIGH):?>
 							<div class = "span4"><?php echo CHtml::link('<i class = "icon-star-empty"></i> Feature', array('packages/feature', 'id'=>$current_package->id),array('class'=>'feature_link')) ?></div>
+								<?php endif;?>
 							<?php if($status == Packages::PAUSED):?>
 							<div class = "span4"><?php echo CHtml::link('<i class = "icon-play"></i> Resume', array('packages/resume', 'id'=>$current_package->id),array('class'=>'resume_link')) ?></div>
 							<?php else: ?>
@@ -231,10 +238,22 @@ Quick Fix for resume Flash
 							</div>
 							<?php endif;?>
 							<?php endif;?>
-						</div>
-						
+						</div>						
 					</div>
 			 	</div>
+			 	
+			 	<div class = "thumbnail frame" style = "margin-top:3px;">
+					<div class = "caption" style = "padding: 0px;">	
+						<div class = "row-fluid">
+							<h5 style = "color: #AFCF5C;"><?php echo CHtml::image("$baseUrl/images/graph.png");?> <span style = "position: relative; top: -5px;">PACKAGE SUMMARY REPORT</span></h5>	
+						</div>
+						<div class = "row-fluid">
+							<div class = "span4 help-block"><span style = "font-size: 0.9em">UNITS SOLD</span><h5>50</h5></div>
+							<div class = "span4 help-block"><span style = "font-size: 0.9em">REVENUE</span><h5 style = "color: #3366D1;">R50</h5></div>
+							<div class = "span4 help-block"><span style = "font-size: 0.9em">VIEWS</span><h5>50</h5></div>
+						</div>
+					</div>
+				</div>	
 			</li>
 		<?php endfor; ?>	
 		</ul>
@@ -331,6 +350,18 @@ Quick Fix for resume Flash
 		setTimeout(function(){$(".highlight").removeClass("highlight");}, 5000);
 	}
 	
+	if($(".thumbnails li").length)
+	{
+		$(".thumbnails li").mouseover(function(){
+			$(this).addClass("highlight");
+		}).mouseout(function(){
+			$(this).removeClass("highlight");
+		});
+	}
+	
+	
+	
+	
 	
 	$(".close").tooltip();
 	
@@ -379,6 +410,7 @@ Quick Fix for resume Flash
 	
 	$(".delete_link").click(function(e){		
 		e.preventDefault();
+		confirm("Are you sure you want to delete this item? Deleting this item means it will no longer be available for purchase. Click on OK to delete or Cancel to abort this request.");
 		var form = $(this).parent("form");
 		if(form.length)
 		{			

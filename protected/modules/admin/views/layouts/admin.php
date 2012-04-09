@@ -2,7 +2,7 @@
 	$cs = Yii::app()->clientScript;
 	$baseUrl = Yii::app()->request->baseUrl;
 	 $page_links = new Links($this->id);
-	 $links = $page_links->getLinks();
+	 $links = $page_links->getLinks($this->module->id);
 ?>
 <!doctype html>
 <!-- paulirish.com/2008/conditional-stylesheets-vs-css-hacks-answer-neither/ -->

@@ -1,27 +1,18 @@
-<?php	
-	
-$yii=dirname(__FILE__).'/../yii/framework/yiilite.php';
-$config=dirname(__FILE__).'/protected/config/main.php';
-
-require_once($yii);
+<?php
 
 $isSandbox = false;
 $sandboxHost = 'ssl://www.sandbox.paypal.com';
 
-$fh = fopen("paypal_notify_debug.txt", "w");
+$fh = fopen("paypal_notify_debug.txt", "a");
 
 $liveHost = 'ssl://www.paypal.com';
 if(isset($_GET['sandbox']) && $_GET['sandbox'] == '1'){
 	$isSandbox = true;
 }
 
-$app = Yii::createWebApplication($config);
 
-$payment_id = CHtml::encode($_GET['payment_id']);
-$payment = Payments::model()->findByPk($payment_id);
 
-if($payment)
-{
+
 	fwrite($fh, "picked up payment with id $payment_id\r\n"); //DEBUG
 	
 	$req = "cmd=_notify-validate";
@@ -35,14 +26,33 @@ if($payment)
 		}
 	}	
 	
-	foreach ($_POST as $key=>$value)
+	if($isMagicQuotesOn)
 	{
-		if($key == 'test_ipn' && $value == '1')
+		foreach ($_POST as $key=>$value)
 		{
-			$isSandbox = true;
-		}
-		$req.="&$key=". (($isMagicQuotesOn) ? urlencode(stripslashes($value)) : urlencode($value));	
+			if($key == 'test_ipn' && $value == '1')
+			{
+				$isSandbox = true;
+			}
+			
+			$req.="&$key=".urlencode(stripslashes($value));
+		}	
 	}
+	else
+	{
+		foreach ($_POST as $key=>$value)
+		{
+			if($key == 'test_ipn' && $value == '1')
+			{
+				$isSandbox = true;
+			}
+				
+			$req.="&$key=".urlencode($value);
+		}
+	}	
+	
+	
+	
 	
 	fwrite($fh, "post variables: $req \r\n"); //DEBUG
 	
@@ -54,7 +64,7 @@ if($payment)
 	
 	if(!$fp)
 	{			
-		mail("mbagwu.c@gmail.com", "HTTP Failure from Paypal", "An Http Failure from pay pal just occured now: \r\n$errno: $errstr");
+		fwrite($fh, "HTTP Failure from Paypal", "An Http Failure from pay pal just occured now: \r\n$errno: $errstr"); //DEBUG		
 	}	
 	else
 	{	
@@ -68,39 +78,23 @@ if($payment)
 			if(strcmp($res, "VERIFIED") == 0)
 			{
 				fwrite($fh, "confirmed VERIFIED \r\n"); //DEBUG
-				$payment->status = Payments::COMPLETED;
-				
-			/*	– Confirm that the payment status is Completed.
-				PayPal sends IPN messages for pending and denied payments as well; do not ship until
-				the payment has cleared.
-				– Use the transaction ID to verify that the transaction has not already been processed,
-				which prevents duplicate transactions from being processed.
-				Typically, you store transaction IDs in a database so that you know you are only
-				processing unique transactions.
-				– Validate that the receiver’s email address is registered to you.
-				This check provides additional protection against fraud.
-				– Verify that the price, item description, and so on, match the transaction on your website.
-				This check provides additional protection against fraud*/
 				
 				if(strcmp($_POST['payment_status'], "Completed"))
 				{
-					fwrite($fh, "confirmed that payment_status is Completed");
-					$payment->save(false);	
+					fwrite($fh, "confirmed that payment_status is Completed");						
 				}				
 				
 					
 			}
 			else if(strcmp($res, "INVALID") == 0)
 			{
-				fwrite($fh, "confirmed INVALID \r\n"); //DEBUG
-				$payment->status = Payments::FAILED;
-				$payment->save(false);
+				fwrite($fh, "confirmed INVALID \r\n"); //DEBUG				
 			}
 		}
 	}
 	
 	fclose($fp);	
-}
+
 	fclose($fh);
 	
 ?>

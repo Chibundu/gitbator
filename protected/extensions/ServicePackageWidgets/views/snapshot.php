@@ -2,7 +2,9 @@
 		$baseUrl = Yii::app()->request->baseUrl;
 		$app = Yii::app();		
 		
-		$logo = Miscellaneous::getLogo();
+		$sp = $model->serviceprovider;
+		
+		$logo = $sp->pic;
 		$logoPath = ($logo)? Miscellaneous::getRelativeLogoPath().$logo : '';
 		
 		$rating = 0;
@@ -18,7 +20,7 @@
 			$rating = $packageRating;
 		}
 		
-		$country = ($model)?$model->serviceprovider->address->country: 'ZA';
+		$country = ($model)?$sp->address->country: 'ZA';
 		$country = strtolower($country);
 	?>
 	<div class = "row-fluid">
@@ -82,10 +84,10 @@
 						<div class = "span6">
 							<span style = "word-wrap:break-word;"><?php echo ($model)? $model->description : $description; ?></span>
 						</div>
-						<div class = "span6" >
+						<div class = "span6">
 							
-							<?php echo CHtml::image($baseUrl.'/'.$app->params['service_packages_dir'].(($model)?"larger/".$model->picture: $picture), '', 
-									array('style'=>"background-image: -moz-linear-gradient(center top , #F6F2EC, #E2DBCE); border: 4px solid #FFFFFF; box-shadow: 0 0 2px rgba(0, 0, 0, 0.35), 0 85px 180px 0 #FFFFFF, 0 12px 8px -5px rgba(0, 0, 0, 0.85);")); ?>
+							<?php echo CHtml::image($baseUrl.'/'.$app->params['service_packages_dir'].(($model)?"larger/".$model->picture: $picture), 'no screenshot', 
+									array('class'=>'picture_frame span4 right')); ?>
 						
 						</div>
 					</div>

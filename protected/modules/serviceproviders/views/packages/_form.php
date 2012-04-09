@@ -20,18 +20,16 @@ $form=$this->beginWidget('ext.bootstrap.widgets.BootActiveForm',array(
  
  </div>
  
- <div class = "row-fluid">
- 	<div class = "span8">
- 	
  		<div class = "row-fluid">
-	<div class = "span12">
-		<p class="help-block append-bottom">Fields with <span class="required">*</span> are required.</p>
-	
+ 			<p class="help-block append-bottom">Fields with <span class="required">*</span> are required.</p>
+ 		 </div>
+		<div class = "row-fluid">
 			<?php echo $form->errorSummary($model); ?>
-	
-		<div class = "prepend-top">
-			<?php echo $form->textFieldRow($model,'title',array('class'=>'span12','maxlength'=>45)); ?>
 		</div>
+	
+		
+		<?php echo $form->textFieldRow($model,'title',array('class'=>'span8 prepend-top','maxlength'=>45)); ?>
+		
 		<div class = "prepend-top">
 		<div class = "row-fluid">
 			<?php echo $form->labelEx($model,'description'); ?>
@@ -40,7 +38,7 @@ $form=$this->beginWidget('ext.bootstrap.widgets.BootActiveForm',array(
 			<span class = "help-block">Be descriptive and concise.</span>
 		</div>
 		<div class = "row-fluid">
-			<?php echo $form->textArea($model,'description',array('class'=>'span12','maxlength'=>500, 'rows'=>8)); ?>
+			<?php echo $form->textArea($model,'description',array('class'=>'span8','maxlength'=>500, 'rows'=>8)); ?>
 		</div>
 		<div class = "row-fluid">
 			<?php echo $form->error($model,'description'); ?>
@@ -99,7 +97,7 @@ $form=$this->beginWidget('ext.bootstrap.widgets.BootActiveForm',array(
 		<span class = "help-block">Please list one item per line</span>
 		</div>
 		<div class = "row-fluid">
-			<?php echo $form->textArea($model, 'deliverables', array('class'=>'span12 help-block', 'rows'=>8, 'id'=>'Packages_deliverables')); ?>	
+			<?php echo $form->textArea($model, 'deliverables', array('class'=>'span8 help-block', 'rows'=>8, 'id'=>'Packages_deliverables')); ?>	
 		</div>
 		<div class = "row-fluid">
 			<?php echo $form->error($model, 'deliverables'); ?>	
@@ -114,7 +112,7 @@ $form=$this->beginWidget('ext.bootstrap.widgets.BootActiveForm',array(
 			<span class = "help-block">Please list one item per line</span>
 		</div>
 		<div class = "row-fluid">
-			<?php echo $form->textArea($model, 'excluded', array('class'=>'span12 help-block', 'rows'=>8, 'id'=>'excluded')); ?>
+			<?php echo $form->textArea($model, 'excluded', array('class'=>'span8 help-block', 'rows'=>8, 'id'=>'excluded')); ?>
 		</div>
 		<div class = "row-fluid">
 			<?php echo $form->error($model, 'excluded'); ?>	
@@ -139,21 +137,21 @@ $form=$this->beginWidget('ext.bootstrap.widgets.BootActiveForm',array(
 		
 		<div class = "row-fluid">
 	
-			<div class = "span1">		
-				 <span class = "bold highlight" style = "font-size: 1.5em;"><?php echo $symbol; ?></span>
+			<div style = "width: 0px; float: left;">
+				<span class = "bold highlight" style = "font-size: 1.5em;"><?php echo $symbol; ?></span>
 			</div>
-			
-			<div class = "span2">
-				<div class = "row-fluid">
+			<div class = "span1">
+				<div class = "row-fluid">				
 				 <?php echo $form->textField($model,'cost',array('class'=>'span12','maxlength'=>45)); ?>		 
 				</div>
-				<div class = "row-fluid">
+				<div class = "row">
 				<?php echo $form->error($model,'cost'); ?>
 				</div>
-			</div>
-			
-			<div class = "span3">
-				<?php echo $form->dropdownList($model,'cost_type', Packages::costTypes(), array('class'=>'span12','maxlength'=>45)); ?>
+			</div>	
+			<div class = "span2">
+				<div class = "row-fluid">
+					<?php echo $form->dropdownList($model,'cost_type', Packages::costTypes(), array('class'=>'span7','maxlength'=>45)); ?>
+				</div>
 			</div>
 		
 		</div>
@@ -163,7 +161,7 @@ $form=$this->beginWidget('ext.bootstrap.widgets.BootActiveForm',array(
 		</div>
 		<div class = "row-fluid">		
 			
-			<div class = "span12">
+			<div class = "span8">
 				<div class = "row-fluid">				
 				 <?php echo $form->textField($model,'discount', array('class'=>'span2')).' &nbsp;<span = style = "font-size: 1.4em; font-weight: bold;">%</span>'; ?>		
 				</div>
@@ -187,11 +185,12 @@ $form=$this->beginWidget('ext.bootstrap.widgets.BootActiveForm',array(
 			<div class = "row-fluid">
 				<span class = "help-block">Give buyers a head start</span>
 			</div>
-			<?php echo $form->textArea($model,'instructions',array('class'=>'span12','maxlength'=>500, 'rows'=>8)); ?>
+			<?php echo $form->textArea($model,'instructions',array('class'=>'span8','maxlength'=>500, 'rows'=>8)); ?>
 		</div>
 		
 	
 		<div class = "row-fluid">
+			<?php echo CHtml::hiddenField("edit", false, array('id'=>'edit'));?>
 			<?php echo CHtml::hiddenField("left", "", array('id'=>'left'));?>
 			<?php echo CHtml::hiddenField("top", "", array('id'=>'top'));?>
 			<?php echo CHtml::hiddenField("width", "", array('id'=>'width'));?>
@@ -211,11 +210,7 @@ $form=$this->beginWidget('ext.bootstrap.widgets.BootActiveForm',array(
 			</div>
 		</div>
 	
-	</div>
-</div>
- 		
- 	</div>
- </div>
+
  
  
  
@@ -244,6 +239,7 @@ $form=$this->beginWidget('ext.bootstrap.widgets.BootActiveForm',array(
 				$("#height").val(data.height);
 				$("#scaledWidth").val(data.scaledWidth);
 				$("#scaledHeight").val(data.scaledHeight);
+				$("#edit").val(data.edit);
 			}	
 			
 		}

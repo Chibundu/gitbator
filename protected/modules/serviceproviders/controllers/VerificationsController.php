@@ -52,7 +52,8 @@ class VerificationsController extends Controller
 			
 		$pages->setPageSize($page_size);
 		
-		if($page == 1){
+		if($page == 1)
+		{
 			$qual = $sp->qualifications(array('limit'=>($page_size - 3)));
 		}
 		else

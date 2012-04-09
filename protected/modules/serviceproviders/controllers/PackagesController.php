@@ -65,6 +65,7 @@ class PackagesController extends Controller
 		if(isset($_POST))
 		{
 			$_SESSION['coordinates'] = array(
+			 'edit'=>$_POST['edit'],
 			 'left'=>$_POST['left'],
 			 'top'=>$_POST['top'],
 			 'width'=>$_POST['width'],
@@ -117,7 +118,7 @@ class PackagesController extends Controller
 									
 					if(CUploadedFile::getInstance($model, 'picture')->saveAs($picture_path))
 					{
-						WideImage::load($picture_path)->resize( 360, 250, 'outside' )->saveToFile($picture_path);					
+						WideImage::load($picture_path)->resize( 260, 180, 'outside' )->saveToFile($picture_path);					
 						
 						
 						$imageSize = getimagesize($picture_path);
@@ -204,7 +205,9 @@ class PackagesController extends Controller
 				} 	
 				if(isset($_SESSION['oldPic']))
 				{
-					@unlink($_SESSION['oldPic']);
+					if($_SESSION['oldPic'] != "default/service_package.png"){
+						@unlink($_SESSION['oldPic']);
+					}
 					unset($_SESSION['oldPic']);
 				}				
 				
@@ -219,13 +222,18 @@ class PackagesController extends Controller
 					$height = (int)$_POST['height'];
 					$scaledWidth = (int)$_POST['scaledWidth'];
 					$scaledHeight = (int)$_POST['scaledHeight'];
+					$edit = $_POST['edit'];
 					
 					$app = Yii::app();
 					$package_dir = $app->params['service_packages_dir'];
 					$picture_path = $package_dir.$picture;
 					
-					if($left > 0 || $top > 0){						
-						
+					Yii::log("left: $left", CLogger::LEVEL_INFO, "info");
+					Yii::log("top: $top", CLogger::LEVEL_INFO, "info");
+					Yii::log("edit: $edit", CLogger::LEVEL_INFO, "info");					
+					
+											
+					if($edit == "proceed"){	
 						//we resize the image to scaled size and crop				
 						WideImage::load($picture_path)->resize($scaledWidth, $scaledHeight, 'fill')->crop($left, $top, $width, $height)->saveToFile($picture_path);						
 						//$image = Yii::app()->image->load($picture_path);
@@ -240,8 +248,8 @@ class PackagesController extends Controller
 							//$larger_image->resize(375,260)->quality(100)->sharpen(30);
 							//$larger_image->save();							
 						}
-						
 					}	
+						
 
 					$_SESSION['justAddedPackage']=$model->id;
 					
@@ -328,9 +336,11 @@ class PackagesController extends Controller
 				} 	
 				if(isset($_SESSION['oldPic']))
 				{
-					@unlink($_SESSION['oldPic']);
+					if($_SESSION['oldPic'] != "default/service_package.png"){
+						@unlink($_SESSION['oldPic']);
+					}
 					unset($_SESSION['oldPic']);
-				}			
+				}				
 				
 				if($picture != "default/service_package.png"){
 					
@@ -342,6 +352,7 @@ class PackagesController extends Controller
 					$height = (int)$_POST['height'];
 					$scaledWidth = (int)$_POST['scaledWidth'];
 					$scaledHeight = (int)$_POST['scaledHeight'];
+					$edit = $_POST['edit'];
 					
 					
 					
@@ -350,7 +361,7 @@ class PackagesController extends Controller
 					$package_dir = $app->params['service_packages_dir'];
 					$picture_path = $package_dir.$picture;
 					
-					if($left > 0 || $top >0){						
+					if($edit == "proceed"){									
 						//we resize the image to scaled size and crop				
 						WideImage::load($picture_path)->resize($scaledWidth, $scaledHeight, 'fill')->crop($left, $top, $width, $height)->saveToFile($picture_path);
 						//Create Larger version but first delete old larger version
@@ -359,7 +370,7 @@ class PackagesController extends Controller
 					}
 					$_SESSION['justAddedPackage']=$model->id;
 					
-					Yii::app()->user->setFlash('success', '<h3>Service Package Upldate</h3> <p>You have successfully updated your Service Package titled <b>'. $model->title .'</b>. We will consider your offer and let you know once it is approved.</p>');
+					Yii::app()->user->setFlash('success', '<h3>Service Package Update</h3> <p>You have successfully updated your Service Package titled <b>'. $model->title .'</b>. We will consider your offer and let you know once it is approved.</p>');
 					$this->redirect('index', false);
 				}
 				
@@ -558,6 +569,7 @@ class PackagesController extends Controller
 				if($purse->pay($orderId, 'SP', $successMessage, $errorMessage))
 				{
 					$package->featured_priority = Packages::HIGH;
+					$package->featured_time = new CDbExpression('NOW()');
 					$package->save(false);
 				}
 				
@@ -596,8 +608,9 @@ class PackagesController extends Controller
 	/**
 	 * Lists all models.
 	 */
-	public function actionIndex()
+	public function actionIndex($page = 1)
 	{
+		
 		if(isset($_SESSION['coordinates']))
 		{
 			unset($_SESSION['coordinates']);
@@ -609,8 +622,21 @@ class PackagesController extends Controller
 			@unlink(Yii::app()->params['service_packages_dir'].$_SESSION['newPic']);		
 			unset($_SESSION['newPic']);			
 		}	
-		$packages = Miscellaneous::getServiceProvider()->packages;
-		$this->render('index', array('packages'=>$packages, 'name'=>Miscellaneous::getTeamMember()->firstname));
+		
+		$criteria = new CDbCriteria();
+		$criteria->select = '*';
+		$criteria->condition = "serviceproviders_id = ". Miscellaneous::getSpId();
+		$criteria->order = "created_on DESC, last_modified DESC";
+		
+		$total = Packages::model()->count($criteria);
+		$pages = new CPagination($total);
+		$pages->pageSize = 8;
+		
+		$pages->applyLimit($criteria);
+		
+		$packages = Packages::model()->findAll($criteria);
+		
+		$this->render('index', array('packages'=>$packages, 'name'=>Miscellaneous::getTeamMember()->firstname, 'pages'=>$pages, 'total'=>$total));
 	}
 
 	/**

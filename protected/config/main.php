@@ -15,10 +15,8 @@ return array(
 
 	// autoloading model and component classes
 	'import'=>array(
-		'application.models.*',
+		'application.models.*',		
 		'application.components.*',		
-		'application.components.payment.*',
-		'application.components.payment.behaviors.*',
 		'bootstrap.widgets.*',
 		'ext.helpers.XHtml',
 		'application.utilities.*',
@@ -38,6 +36,7 @@ return array(
 			),
 		),
 		'serviceproviders',
+		'entrepreneurs',
 		'admin',
 		
 	),
@@ -102,7 +101,11 @@ return array(
 					'levels'=>CLogger::LEVEL_TRACE,
 					'categories'=>'registration',
 					'logFile'=>'registration',
-				),				
+				),	
+				array(
+					'class'=>'CWebLogRoute',					
+					'categories'=>'info',					
+				),			
 			),
 		),
 		'bootstrap'=>array(

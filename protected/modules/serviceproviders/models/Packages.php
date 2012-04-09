@@ -24,6 +24,7 @@
  * @property integer $status
  * @property integer $banned
  * @property integer $featured_priority
+ * @property integer $views
  *
  * The followings are the available model relations:
  * @property PackageDeliverables[] $packageDeliverables
@@ -147,7 +148,8 @@ class Packages extends CActiveRecord
 			'created_on'=>'Created On',
 			'banned'=>'Banned',
 			'status'=>'Status',
-			'featured_priority'=>'Priority'
+			'featured_priority'=>'Priority',
+			'views'=>'Views',
 		);
 	}
 
@@ -179,11 +181,36 @@ class Packages extends CActiveRecord
 		$criteria->compare('discount',$this->discount);
 		$criteria->compare('banned',$this->banned);
 		$criteria->compare('status',$this->status);
+		$criteria->compare('views',$this->views);
 		$criteria->compare('featured_priority',$this->status);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
 		));
+	}
+	
+	public function scopes()
+	{
+		return array(
+			'active'=>array(
+						'condition'=>'status = '.self::ACTIVE,
+					),
+			'latest'=>array(
+						'order'=>'last_modified DESC',
+					),
+			'mostViewed'=>array(
+						'order'=>'views DESC',
+					),
+			'leastViewed'=>array(
+					'order'=>'views ASC',
+					),
+			'featured'=>array(
+						'condition'=>'featured_priority >='.self::HIGH,
+					),
+			'notFeatured'=>array(
+						'condition'=>'featured_priority < '. self::HIGH,
+					),		
+		);
 	}
 	
 	/**

@@ -114,19 +114,9 @@
     
      <div id="secondary-bar">     
      	<div class="container-fluid">
-	     	<div class = "row-fluid">
-	     		<div class = "span2">
-					<div id="menu_tray">
-						<ul>
-							<li class="menu_focus"><?php echo CHtml::link('',array('default/'),array('data-original-title'=>"Dashboard", 'rel'=>'tooltip', 'data-placement'=>'bottom', 'id'=>'home',"class"=>"home"))?></li>
-							<li><?php echo CHtml::link('',array('/serviceproviders/settings/overview'), array('id'=>'settings', 'class'=>'settings', 'data-placement'=>'bottom', 'rel'=>'tooltip', 'data-original-title'=>'Settings'))?></li>
-							<li><?php echo CHtml::link('',array('profile/'),array('data-original-title'=>"Profile", 'rel'=>'tooltip', 'data-placement'=>'bottom', 'id'=>'profile',"class"=>"profile"))?></li>
-							<li><a href="#" rel = "tooltip" data-original-title="Messages" data-placement="bottom" class="mail" id = "mail"></a></li>
-					
-						</ul>		
-					</div>
-				</div>
-				<div class = "span2" >					
+	     	<div class = "row-fluid">	     	
+				<div class = "span2" >
+					<?php if($completeness < 100):?>					
 					<div class = "row-fluid">
 					<?php 
 						$this->widget('zii.widgets.jui.CJuiProgressBar', array(
@@ -141,11 +131,14 @@
 					<div class = "row-fluid quiet">
 					 <span style = "font-size: 70%">profile completeness <?php echo $completeness; ?>%</span>
 					</div>
+					<?php else:?>
+					&nbsp;
+					<?php endif;?>
 				</div>	
 				
 				
-				<div class = "span8">
-				<span class = "right" style = "background: #fff; padding: 4px; border: 1px solid #EBEBEB; border-radius: 7px; -moz-border-radius: 7px; -webkit-border-radius: 7px;"><?php echo CHtml::image("$baseUrl/images/icon-purse.png",'V-Purse', array('style'=>'position: relative; top: 4px;')).' <span style = "font-size: 1.5em;" class = "highlight">'.$currency->symbol.'</span><span style = "font-size: 1.4em;">'.number_format($sp->purse, 2). '</span>'; ?></span>
+				<div class = "span10">
+				<span class = "right" style = "padding: 4px;"><?php echo CHtml::image("$baseUrl/images/icon-purse.png",'V-Purse', array('style'=>'position: relative; top: -2px;')).' <span style = "font-size: 1.5em;font-weight: bold;">'.$currency->symbol.'</span><span style = "font-size: 1.4em;">'.number_format($sp->purse, 2). '</span>'; ?></span>
 				</div>		
 			
 				
