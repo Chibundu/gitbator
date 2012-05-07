@@ -13,7 +13,7 @@ $form=$this->beginWidget('ext.bootstrap.widgets.BootActiveForm',array(
  
  <div class = "row-fluid">
  
- 	<div id="modal" class="giant-reveal-modal">
+ 	<div id="modal" class="reveal-modal xlarge">
  		<a class="close-reveal-modal">&#215;</a>
  		<div id = "modal_content"></div>		
 	</div>

@@ -29,6 +29,7 @@ class SpOrder extends CActiveRecord
 {
 	const PENDING = 1;
 	const PAID = 2;
+	const FULFILLED = 3;
 	const CANCELLED = 0;
 	const FAILED = -1;
 	

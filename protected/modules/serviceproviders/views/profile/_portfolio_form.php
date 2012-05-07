@@ -67,11 +67,11 @@
 	<?php echo $form->errorSummary($model); ?>
 	<?php echo CHtml::hiddenField('id', $model->id); ?>
 	<?php echo CHtml::hiddenField('ajax', 'portfolios-form'); ?>
-	<?php echo $form->fileFieldRow($model, 'resource_location', array('class'=>'span10 pop', 'data-original-title'=>'Associated Graphics', 'data-content'=>'Remember what they say about pictures being worth a thousand words? Yes! Capture the attention of Vcubator entrepreneurs with a descriptive image of this portfolio Item.')); ?>
+	<?php echo $form->fileFieldRow($model, 'resource_location', array('class'=>'span7 pop', 'data-original-title'=>'Associated Graphics', 'data-content'=>'Remember what they say about pictures being worth a thousand words? Yes! Capture the attention of Vcubator entrepreneurs with a descriptive image of this portfolio Item.')); ?>
 	
-	<?php echo $form->textFieldRow($model,'tag',array('maxlength'=>45, 'class'=>"span10 pop", 'data-original-title'=>'Title', 'data-content'=>'Please enter a caption for this portfolio item')); ?>	
-	<?php echo $form->textFieldRow($model,'associated_link',array('maxlength'=>45, 'class'=>"span10 pop",'data-original-title'=>'Associated Link', 'data-content'=>'Do you have a website that can further illustrate this portfolio item? Please enter the link to such a site here. For example: http://www.example.com')); ?>	
-	<?php echo $form->textAreaRow($model,'Description',array('cols'=>'50', 'rows'=>'10','class'=>"span10 pop", 'data-original-title'=>'Portfolio Description', 'data-content'=>'In a few words(less than 500 characters), please describe this portfolio item.')); ?>
+	<?php echo $form->textFieldRow($model,'tag',array('maxlength'=>45, 'class'=>"span7 pop", 'data-original-title'=>'Title', 'data-content'=>'Please enter a caption for this portfolio item')); ?>	
+	<?php echo $form->textFieldRow($model,'associated_link',array('maxlength'=>45, 'class'=>"span7 pop",'data-original-title'=>'Associated Link', 'data-content'=>'Do you have a website that can further illustrate this portfolio item? Please enter the link to such a site here. For example: http://www.example.com')); ?>	
+	<?php echo $form->textAreaRow($model,'Description',array('cols'=>'50', 'rows'=>'10','class'=>"span7 pop", 'data-original-title'=>'Portfolio Description', 'data-content'=>'In a few words(less than 500 characters), please describe this portfolio item.')); ?>
 	<div>
 		<?php echo CHtml::link('Enter', array('#'), array('id'=>'submit', 'name'=>'enter_btn', 'class'=>'btn')); ?>
 	</div>

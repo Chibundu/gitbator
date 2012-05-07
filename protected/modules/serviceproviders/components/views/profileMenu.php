@@ -29,14 +29,14 @@
 				<div class="center bold">Company Logo</div>
 				<?php
 				$pic = Miscellaneous::getLogo();				
-				$logoPath = Miscellaneous::getRelativeLogoPath();
+				$picPath = Miscellaneous::getRelativeLogoPath();
 				
 				if($pic == null || $pic==''):?>
 				<div id="logo_bar"></div>
 				<?php 
 				else:
 				?>
-				<div class="center"><?php echo CHtml::image($logoPath.$pic); ?></div>
+				<div class="center"><?php echo CHtml::image($picPath.$pic); ?></div>
 				<?php 
 				endif; 
 				?>

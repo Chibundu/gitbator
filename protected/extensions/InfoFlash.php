@@ -30,14 +30,24 @@ class InfoFlash extends CWidget {
 	public $message = '';
 	
 	/**
+	 * Whether or not to have a "close" link
+	 * @var boolean
+	 */
+	public $isClosable = true;
+	
+	/**
 	 * (non-PHPdoc)
 	 * @see CWidget::run()
 	 */
 	public function run()
 	{
-		echo '<div class = "alert '.$this->css.'">
-		 <a class="close" data-dismiss="alert">&times;</a>
-		 <h4 class="alert-heading">'.$this->heading.'</h4>
+		echo '<div class = "alert '.$this->css.'">';
+		
+		 if($this->isClosable){
+		 	echo '<a class="close" data-dismiss="alert">&times;</a>';
+		 }
+		 
+		 echo '<h4 class="alert-heading">'.$this->heading.'</h4>
 		 <div class = "'.$this->contentCss.'">'.
 		 	$this->message
 		 .'</div>

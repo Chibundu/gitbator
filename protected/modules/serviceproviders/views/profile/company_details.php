@@ -22,14 +22,14 @@
 				$form = $this->beginWidget('BootActiveForm');?>
 			
 			
-			<?php echo $form->textFieldRow($model, 'displayName', array('class'=>'span12 pop', 'data-original-title'=>'Display Name', 'data-content'=>'Please enter your name as you would love it to appear to Clients(Entrepreneurs).')); ?>
+			<?php echo $form->textFieldRow($model, 'displayName', array('class'=>'span5 pop', 'data-original-title'=>'Display Name', 'data-content'=>'Please enter your name as you would love it to appear to Clients(Entrepreneurs).')); ?>
 			
 			<?php if($model->accountType == 'company'):?>
 			
-				<?php echo $form->textFieldRow($model, 'businessName', array('class'=>'span12 pop','data-original-title'=>'Business Name', 'data-content'=>'Please enter the official name of your business or company.')); ?>
-				<?php echo $form->textFieldRow($model, 'tagline', array('class'=>'span12 pop', 'data-original-title'=>'Tagline', 'data-content'=>'If you have a slogan or motto, please enter it here')); ?>
-				<?php echo $form->textFieldRow($model, 'businessRegType', array('class'=>'span12 pop', 'data-original-title'=>'Registration', 'data-content'=>'How was your company registered? CC, PTY? Please enter here.')); ?>
-				<?php echo $form->textFieldRow($model, 'businessRegNo', array('class'=>'span12 pop', 'data-original-title'=>'Registration Number', 'data-content'=>'Please enter your company\'s registration number here')); ?>
+				<?php echo $form->textFieldRow($model, 'businessName', array('class'=>'span5 pop','data-original-title'=>'Business Name', 'data-content'=>'Please enter the official name of your business or company.')); ?>
+				<?php echo $form->textFieldRow($model, 'tagline', array('class'=>'span5 pop', 'data-original-title'=>'Tagline', 'data-content'=>'If you have a slogan or motto, please enter it here')); ?>
+				<?php echo $form->textFieldRow($model, 'businessRegType', array('class'=>'span5 pop', 'data-original-title'=>'Registration', 'data-content'=>'How was your company registered? CC, PTY? Please enter here.')); ?>
+				<?php echo $form->textFieldRow($model, 'businessRegNo', array('class'=>'span5 pop', 'data-original-title'=>'Registration Number', 'data-content'=>'Please enter your company\'s registration number here')); ?>
 				
 				<?php echo $form->dropDownListRow($model,'regYear',RecentYearRange::$years, array('class'=>'span5 pop', 'data-original-title'=>'Registration Year', 'data-content'=>'What year was your company registered?')); ?>
 				

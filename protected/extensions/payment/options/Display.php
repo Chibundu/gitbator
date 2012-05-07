@@ -1,7 +1,4 @@
 <?php
-Yii::import('ext.components.payment.options.Option');
-Yii::import('ext.components.payment.payfast.Payfast');
-Yii::import('ext.components.payment.paypal.Paypal');
 
 class Display extends CWidget {
 	
@@ -29,16 +26,16 @@ class Display extends CWidget {
 		return array(
 					array(
 						'name'=>'purse',
-						'graphic'=>"$baseUrl/images/purse.png",
+						'img'=>"purse.png",
 					),
 					array(
 						'name'=>'paypal',
-						'graphic'=>"$baseUrl/images/paypal.png",
+						'img'=>"paypal.png",
 					
 					),
 					array(
 						'name'=>'payfast',
-						'graphic'=>"$baseUrl/images/credit_cards.png"					
+						'img'=>"credit_cards.png",					
 					),
 				
 				);	

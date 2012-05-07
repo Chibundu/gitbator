@@ -56,6 +56,11 @@ class Packages extends CActiveRecord
 	const HIGHER = 2;
 	const HIGHEST = 3;
 	
+	const REQUIREMENTS_PENDING = 0;
+	const IN_PROGRESS = 1;
+	const CANCELLED = -1;
+	const WORK_REJECTED = -2;
+	const COMPLETED = 2;	
 	
 	public $deliverables;
 	public $excluded;
@@ -377,7 +382,25 @@ class Packages extends CActiveRecord
 			return 'PKG-'.$id;
 		}
 	}
-	
+	public static function getStatusMessage($status)
+	{
+		switch($status)
+		{
+			case self::REQUIREMENTS_PENDING:
+				return "Service provider awaiting further instructions.";
+			break;
+			case self::IN_PROGRESS:
+				return "In Progress";
+			break;
+			case self::CANCELLED:
+				return "Cancelled";
+			break;
+			case self::WORK_REJECTED:
+				return "Rejected";
+			break;
+			
+		}
+	}
 	public function behaviors()
 	{
 			return array(

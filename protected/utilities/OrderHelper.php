@@ -13,12 +13,14 @@ class OrderHelper {
 	 * 	'user_type'=>'SP',
 	 *  'user_id'=>1,
 	 *  'orders'=>array(
+	 *  	array(
 	 *  	'item'=>SaleItems::PACKAGE_FEATURE,
 	 *		'description'=>'Upgrade of package "<b>'.$package->title.'</b>" to Premium.',
 	 *		'quantity'=>1,								
 	 *		'currency_id'=>3,		
+	 *		'currency_symbol'=>R,
 	 *		'unit_price'=>200,
-	 *		'discount'=>0,
+	 *		'discount'=>0,),
 	 *  ),
 	 * );
 	 * @return array of order ids that were taken
@@ -41,26 +43,31 @@ class OrderHelper {
 			$user_id_column = "serviceproviders_id";
 			$status = SpOrder::PENDING;
 		}
+		else if($user_type == 'ET')
+		{
+			$table = '{{etOrders}}';
+			$user_id_column = "users_id";
+			$status = EtOrders::PENDING;			
+		}
 		
 			
-		$command = $db->createCommand("INSERT INTO $table ($user_id_column, amount, status, qty, currencies_id, unit_price, discount, description, item) VALUES (:uId, :amount, :status, :qty, :cid, :unit_price, :discount, :description, :item)");
-		
-		
+		$command = $db->createCommand("INSERT INTO $table ($user_id_column, amount, status, qty, currencies_id, unit_price, discount, description, item, create_time) VALUES (:uId, :amount, :status, :qty, :cid, :unit_price, :discount, :description, :item, NOW())");
+				
 		$orders = $orderConfig['orders'];
 		
 		$order_ids = array();
 		
+		$create_time = 'NOW()';
+		
 		foreach ($orders as $order)
-		{
-				
-			$quantity = $order['quantity'];
+		{				
+			$quantity = $order['quantity'];			
 			$unit_price = $order['unit_price'];
 			$discount = $order['discount'];
 			$description = $order['description'];
 			$currency_id = $order['currency_id'];
 				
-			$item = $order['item'];
-			
+			$item = $order['item'];			
 				
 			$tAmount = $quantity * $unit_price;
 			$amount = $tAmount - (($tAmount * $discount)/100);
@@ -81,9 +88,7 @@ class OrderHelper {
 				
 			$command->bindParam(':description', $description, PDO::PARAM_STR);
 				
-			$command->bindParam(':item', $item, PDO::PARAM_STR);
-				
-				
+			$command->bindParam(':item', $item, PDO::PARAM_STR);			
 		
 			$command->execute();
 			
@@ -160,6 +165,11 @@ class OrderHelper {
 						'postalCode'=>$address->postalCode,
 				),
 		);
+	}
+	
+	public static function getEtPayerDetails()
+	{
+		return array();
 	}
 	
 	/**

@@ -34,17 +34,17 @@ $baseUrl = Yii::app()->request->baseUrl;
 					'enableAjaxValidation'=>true,
 	 				 'id'=>'address-form',
 ));?>
- <?php echo $form->textFieldRow($address,'firstline', array('class'=>'span12'));?>
-	 <?php echo $form->textFieldRow($address,'secondline', array('class'=>'span12'));?>
-	 <?php echo $form->textFieldRow($address,'city', array('class'=>'span12'));?>	
+ <?php echo $form->textFieldRow($address,'firstline', array('class'=>'span7'));?>
+	 <?php echo $form->textFieldRow($address,'secondline', array('class'=>'span7'));?>
+	 <?php echo $form->textFieldRow($address,'city', array('class'=>'span7'));?>	
 	 <?php echo $form->dropDownListRow($address,'province',Yii::app()->params['provinces']);?>	
 	 <?php echo $form->dropDownListRow($address,'country', CountryUtility::$countries)?>
 <hr>
 <h3>Postal Address</h3>
- 	<?php echo $form->textFieldRow($postal_address,'firstline', array('class'=>'span12'));?>
-	 <?php echo $form->textFieldRow($postal_address,'secondline', array('class'=>'span12'));?>
-	  <?php echo $form->textFieldRow($postal_address,'postalCode', array('class'=>'span12'));?>
-	 <?php echo $form->textFieldRow($postal_address,'city', array('class'=>'span12'));?>	
+ 	<?php echo $form->textFieldRow($postal_address,'firstline', array('class'=>'span7'));?>
+	 <?php echo $form->textFieldRow($postal_address,'secondline', array('class'=>'span7'));?>
+	  <?php echo $form->textFieldRow($postal_address,'postalCode', array('class'=>'span7'));?>
+	 <?php echo $form->textFieldRow($postal_address,'city', array('class'=>'span7'));?>	
 	 <?php echo $form->dropDownListRow($postal_address,'province',Yii::app()->params['provinces']);?>	
 	 <?php echo $form->dropDownListRow($postal_address,'country', CountryUtility::$countries)?>
 	<p class="form-actions">

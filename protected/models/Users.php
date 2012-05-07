@@ -16,8 +16,10 @@
  * @property string $create_time
  * @property string $phone
  * @property string $website
+ * @property integer $currencies_id
  *
  * The followings are the available model relations:
+ * @property Currencies $currency
  * @property Addresses[] $addresses
  * @property Bizinfo[] $bizinfos
  * @property Jobs[] $jobs
@@ -59,7 +61,7 @@ class Users extends CActiveRecord
 			array('pic, dob, lastUpdateTime, create_time, website', 'safe'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, firstname, lastname, sex, email, pic, dob, highestLevelOfEducation, lastUpdateTime, create_time, phone, website', 'safe', 'on'=>'search'),
+			array('id, firstname, lastname, sex, email, pic, dob, highestLevelOfEducation, lastUpdateTime, create_time, phone, website, currencies_id', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -71,6 +73,7 @@ class Users extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
+			'currency'=>array(self::BELONGS_TO, 'Currencies', 'currencies_id'),
 			'addresses' => array(self::HAS_MANY, 'Addresses', 'users_id'),
 			'bizinfos' => array(self::HAS_MANY, 'Bizinfo', 'tbl_users_id'),
 			'jobs' => array(self::HAS_MANY, 'Jobs', 'users_id'),
@@ -97,6 +100,7 @@ class Users extends CActiveRecord
 			'create_time' => 'Create Time',
 			'phone' => 'Phone',
 			'website' => 'Website',
+			'currencies_id'=>'Currency',
 		);
 	}
 
@@ -123,6 +127,7 @@ class Users extends CActiveRecord
 		$criteria->compare('create_time',$this->create_time,true);
 		$criteria->compare('phone',$this->phone,true);
 		$criteria->compare('website',$this->website,true);
+		$criteria->compare('currencies_id',$this->currencies_id,true);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,

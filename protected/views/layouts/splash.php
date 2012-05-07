@@ -62,8 +62,8 @@
 
       <!-- Example row of columns -->
       <div class="row prepend-top">
-       	<div class = "span3">
-       		<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+       	<div class = "span3 navbar">
+       		<a class="btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>

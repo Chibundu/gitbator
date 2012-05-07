@@ -1,34 +1,6 @@
 <?php
 
-class Miscellaneous {
-	/**
-	 * gets key=>value array which can be used for dropdown menu from a database table
-	 * built for Yii framework
-	 * @param string $id_field, field which will be used as the key
-	 * @param string $other_field, field which should contain the value to be displayed
-	 * @param string $table, the table to perform the operation on - leave out table prefix.
-	 * @author Chibundu Mbagwu
-	 */
-	public static function getDbList($id_field, $other_field, $table)
-	{
-		$sql = "select $id_field, $other_field from {{".$table."}}";
-		$connection = Yii::app()->db;
-		$command = $connection->createCommand($sql);
-		$dataReader = $command->query();
-		
-		$result = array();
-		while(($row = $dataReader->read())!== false)
-		{			
-			$id = $row["$id_field"];
-			$value = $row["$other_field"];			
-			$result[$id] = $value;			
-		}
-		if(count($result)>0)
-		{
-			return $result;
-		}
-		return null;		
-	}
+class Miscellaneous {	
 	
 	/**
 	 * generates a set of random characters (letters and digits)
@@ -427,23 +399,26 @@ class Miscellaneous {
 	 */
 	public static function getEntrepreneur()
 	{		
-		$ent = Yii::app()->session['ent'];		
+		$ent = Yii::app()->session['ent'];	
+	
 		if($ent == NULL){
-			if(Yii::app()->user->isGuest())
-			{
-				Yii::app()->user->logout();
+			
+			if(Yii::app()->user->isGuest)
+			{				
 				Yii::app()->request->redirect(Yii::app()->baseUrl.Yii::app()->user->loginUrl[0]);
-			}			
+			}
+						
 			$username = Yii::app()->user->id;
-			$user = Authdetails::model()->findByAttributes(array('username'=>$username));
-			if($user == NULL){
+			$ent = Users::model()->findByAttributes(array('email'=>$username));
+			
+			if($ent == NULL){
 				Yii::app()->user->logout();
 				Yii::app()->request->redirect(Yii::app()->baseUrl.Yii::app()->user->loginUrl[0]);
 			}
 			else
 			{
-				self::grantAccess($user);
-				$ent = Yii::app()->session['ent'];				
+				
+				Yii::app()->session['ent'] = $ent;				
 			}				
 		}
 		else
@@ -608,6 +583,56 @@ class Miscellaneous {
 		Yii::app()->session['spId'] = $spId;
 	  }		
 		return $spId;		
+	}
+	
+	public static function escapeInput()
+	{
+		if(get_magic_quotes_gpc())
+		{
+			if(!empty($_POST))
+			{
+				foreach($_POST as $key => $value)
+				{
+					if(is_string($value))
+					{
+						$_POST[$key] = addslashes($value);
+					}
+					//go one more step
+					else if(is_array($value))
+					{
+						foreach($value as $skey => $sval)
+						{
+							if(is_string($sval))
+							{
+								$_POST[$key][$skey] = addslashes($sval);
+							}
+						}
+					}
+				}				
+			}
+			
+			if(!empty($_GET))
+			{
+				foreach($_GET as $key => $value)
+				{
+					if(is_string($value))
+					{
+						$_GET[$key] = addslashes($value);
+					}
+					//go one more step
+					else if(is_array($value))
+					{
+						foreach($value as $skey => $sval)
+						{
+							if(is_string($sval))
+							{
+								$_POST[$key][$skey] = addslashes($sval);
+							}
+						}
+					}
+				}				
+			}
+		}
 	}
 	
 	

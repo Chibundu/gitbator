@@ -27,13 +27,9 @@
 		?>
 	</td>
 	<td>
-		<b>
-			<?php echo $symbol; ?>
-		</b> 
-		<?php 
-			$unit_price = $order['unit_price'];
-			echo number_format($unit_price, 2);
-		?>
+	<b><?php echo $symbol; ?></b><?php
+		$unit_price = $order['unit_price'];
+		echo number_format($unit_price, 2);?>
 	</td>
 	<td>		
 		<?php 
@@ -43,15 +39,17 @@
 	</td>
 	<td>		
 		<?php 
-			$totalAmount = $quantity * $unit_price;
-			$total = number_format($totalAmount - (($totalAmount * $discount)/100), 2) ;
-			$grandTotal += $total;	
-			echo "<b>". $symbol."</b> ".$total;		
+			$totalAmount = $quantity * $unit_price;			
+			$total = $totalAmount - (($totalAmount * $discount)/100);
+			
+			$grandTotal += $total;				
+			 
+			echo "<b>". $symbol."</b>".number_format($total, 2);		
 		?>
 	</td>
 </tr>
 
 <?php endforeach;?>
-<tr><td colspan="5"><b>GRAND TOTAL</b></td><td><?php echo "<b>". $symbol."</b> ". number_format($grandTotal, 2); ?></td></tr>
+<tr><td colspan="5"><b>GRAND TOTAL</b></td><td><?php echo "<b>". $symbol."</b>". number_format($grandTotal, 2); ?></td></tr>
 </table>
 <hr>

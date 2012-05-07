@@ -116,13 +116,15 @@ class SiteController extends Controller
 					
 				}
 				else if($account_type == 'ET')
-				{
+				{					
 					Yii::import('entrepreneurs.models.*');
 					$user = new Users();
 					$user->firstname = $reg->firstname;
 					$user->lastname = $reg->lastname;
 					$user->email = $reg->email;
-					$user->phone = $reg->phone;
+					$user->phone = CountryUtility::$intl_code[$reg->country_code].$reg->phone;
+				
+					$user->currencies_id = 3;					
 					$user->save(false);
 					
 					$address = new Addresses();
@@ -155,7 +157,7 @@ class SiteController extends Controller
 					}
 					else
 					{
-						echo 'hee'; exit;
+						$this->redirect('login');
 					}
 				}			
 									

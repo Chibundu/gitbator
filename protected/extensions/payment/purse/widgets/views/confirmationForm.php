@@ -8,7 +8,7 @@
  <?php 
   $this->widget('ext.payment.orders.OrderSummary', array('orders'=>$orders));?>
 <div class = "row-fluid prepend-top">
-	<?php echo CHtml::submitButton('Confirm', array('class' => 'btn btn-success large-btn'));?>
+	<?php echo CHtml::submitButton('Confirm', array('class' => 'btn btn-success btn-large'));?>
 	<?php echo CHtml::link($cancel_literal, $cancel_url, array('class'=>'right'));?>
 </div>
 <?php echo CHtml::endForm();?>

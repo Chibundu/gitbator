@@ -10,14 +10,9 @@ Yii::app()->clientScript->registerScriptFile(Yii::app()->request->baseUrl."/js/a
 
 ?>
 <div class = "row-fluid prepend-top">
-	<div  class = "span4">
+	<div  class = "span12">
 	<h2>Service Packages(<?php echo $total; ?>)</h2>
-	</div>
-	<div  class = "span8">
-	<div class = "right">
-	<?php $this->widget('BootPager', array('pages'=>$pages,'prevPageLabel'=>'&laquo;', 'nextPageLabel'=>'&raquo;', 'htmlOptions'=>array('class'=>'pagination')));?>
-	</div>
-	</div>
+	</div>	
 </div>
 
 
@@ -84,7 +79,7 @@ Quick Fix for resume Flash
 	</div>
 </div>
 
-<div class="giant-reveal-modal">
+<div class="reveal-modal xlarge">
 <a class="close-reveal-modal close" rel="tooltip" data-original-title = "close" data-placement = "right" >&#215;</a>		
 	<div class = "g_content">		
 		<div style = "width: 31px; height:31px; padding-top: 10px; margin: 0px auto;">
@@ -175,7 +170,7 @@ Quick Fix for resume Flash
 						<?php endif; ?>
 					<?php echo CHtml::image("$baseUrl/$packages_dir".$current_package->picture, '', array('height'=>'180px'));?>
 					<div class = "caption">
-						<h5 class = "ellipsis"><?php echo CHtml::link($current_package->title, $package_title_link)?></h5>
+						<h5 class = "ellipsis"><?php echo CHtml::link($current_package->title, $package_title_link, array('class'=>'package_title'))?></h5>
 							<?php $discount = $current_package->discount;?>
 							<div class = "row-fluid prepend-top">
 								<?php if($discount > 0):?>
@@ -336,7 +331,11 @@ Quick Fix for resume Flash
 
 
 
-
+<div class = "row-fluid prepend-top">
+	<div class = "span12">		
+		<?php $this->widget('BootPager', array('pages'=>$pages,'prevPageLabel'=>'&laquo;', 'nextPageLabel'=>'&raquo;', 'htmlOptions'=>array('class'=>'pagination')));?>		
+	</div>
+</div>
 			
 
 
@@ -388,11 +387,11 @@ Quick Fix for resume Flash
 				});
 		});
 		
-	$(".view_link").click(function(e){
+	$(".view_link, .package_title").click(function(e){
 		e.preventDefault();
 		var link = $(this).attr("href");
-		$(".giant-reveal-modal").reveal({
-	 	animation: \'fadeAndPop\', //fade, fadeAndPop, none
+		$(".reveal-modal").reveal({
+	 	 animation: \'fadeAndPop\', //fade, fadeAndPop, none
     	 animationspeed: 300, //how fast animtions are
     	 closeOnBackgroundClick: false, //if you click background will modal close?
     	 dismissModalClass: \'close\'
