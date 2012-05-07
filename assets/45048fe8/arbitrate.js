@@ -1,0 +1,8 @@
+(function sayHi()
+{
+
+	highlight = function()
+	{
+		
+	};
+})();
